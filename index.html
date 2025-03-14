@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garanticoop - Sociedade de Garantia de Crédito</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <!-- Vue.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Arquivo CSS -->
+    <link rel="stylesheet" href="/src/style.css">
+
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header>
+            <div class="container header-container">
+                <a href="#"><img src="src/public/img/logo.svg" alt="Garanticoop" class="logo-image"/></a>
+            
+                <nav class="nav">
+                    <a href="#" class="nav-link" @click.prevent="scrollToSection('home')">Início</a>
+                    <a href="#about" class="nav-link" @click.prevent="scrollToSection('about')">Quem Somos</a>
+                    <a href="#services" class="nav-link" @click.prevent="scrollToSection('services')">Soluções</a>
+                    <a href="#testimonials" class="nav-link" @click.prevent="scrollToSection('testimonials')">Depoimentos</a>
+                    <a href="#contact" class="nav-link" @click.prevent="scrollToSection('contact')">Contato</a>
+                    <a href="https://parceiro.gestaoar.shop/fenacon/garanticoop" class="nav-link">Certificado Digital
+                        <span class="tooltip-text">Adquira já!</span>
+                    </a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </nav>
+                
+                <div class="mobile-menu-btn" @click="toggleMobileMenu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="mobile-menu" :class="{ active: isMobileMenuOpen }">
+                    <a href="#" class="nav-link" @click.prevent="scrollToSection('home', true)">Início</a>
+                    <a href="#about" class="nav-link" @click.prevent="scrollToSection('about', true)">Quem Somos</a>
+                    <a href="#services" class="nav-link" @click.prevent="scrollToSection('services', true)">Soluções</a>
+                    <a href="#testimonials" class="nav-link" @click.prevent="scrollToSection('testimonials', true)">Depoimentos</a>
+                    <a href="#contact" class="nav-link" @click.prevent="scrollToSection('contact', true)">Contato</a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </div>
+                
+                <div class="overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-slider">
+                <div class="hero-slides" :style="{ transform: `translateX(-${currentHeroSlide * 100}%)` }">
+                    <div class="slider-item" style="background-image: url('src/public/img/1.jpg')">
+                        <div class="container hero-content">
+                            <h1>Garanticoop: Soluções de Garantia de Crédito para o seu Negócio</h1>
+                            <p>Acesso facilitado ao crédito para micro e pequenas empresas através de garantias seguras e ágeis. Somos o seu parceiro para o crescimento sustentável.</p>
+                            <div class="hero-buttons">
+                                <a href="#services" class="btn btn-primary" @click.prevent="scrollToSection('services')">Conheça Nossas Soluções</a>
+                                <a href="#contact" class="btn btn-outline" @click.prevent="scrollToSection('contact')">Fale Conosco</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item" style="background-image: url('src/public/img/2.jpg')">
+                        <div class="container hero-content">
+                            <h1>Financiamento mais acessível</h1>
+                            <p>Obtenha taxas reduzidas e condições especiais para alavancar o crescimento da sua empresa.</p>
+                            <div class="hero-buttons">
+                                <a href="#about" class="btn btn-primary" @click.prevent="scrollToSection('about')">Como Funciona</a>
+                                <a href="#contact" class="btn btn-outline" @click.prevent="scrollToSection('contact')">Solicite Agora</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item" style="background-image: url('src/public/img/3.jpg')">
+                        <div class="container hero-content">
+                            <h1>Menos burocracia, mais negócios</h1>
+                            <p>Processo simplificado e ágil para aprovação de suas garantias.</p>
+                            <div class="hero-buttons">
+                                <a href="#contact" class="btn btn-primary" @click.prevent="scrollToSection('contact')">Fale com um Agente</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slider-controls">
+                    <div v-for="(slide, index) in heroSlides" 
+                         :key="`hero-dot-${index}`"
+                         class="slider-dot" 
+                         :class="{ active: currentHeroSlide === index }"
+                         @click="changeHeroSlide(index)"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-title fade-in" ref="aboutTitle">
+                    <h2>Quem Somos</h2>
+                    <p>Conheça nossa história e propósito</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-img fade-in" ref="aboutImg">
+                        <img src="src/public/img/qsomosnos.png" alt="Sobre a Garanticoop">
+                    </div>
+                    
+                    <div class="about-text fade-in" ref="aboutText">
+                        <h3>Nossa Missão</h3>
+                        <p>A Garanticoop é uma Sociedade de Garantia de Crédito criada para apoiar micro e pequenas empresas a terem acesso ao crédito, através da concessão de garantias para bancos e instituições financeiras.</p>
+                        <p>Desde 2010, já auxiliamos mais de 15.000 empresas a obterem financiamentos com taxas mais atrativas e condições facilitadas, contribuindo para o desenvolvimento econômico regional e a geração de empregos.</p>
+                        <p>Nosso trabalho é focado em facilitar o acesso ao crédito para os empreendedores que, muitas vezes, possuem bons projetos, mas não dispõem de garantias suficientes exigidas pelos bancos.</p>
+                        <a href="#" class="btn btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Services Section -->
+        <section id="services" class="services">
+            <div class="container">
+                <div class="section-title fade-in" ref="servicesTitle">
+                    <h2>Nossas Soluções</h2>
+                    <p>Conheça como podemos ajudar seu negócio</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card fade-in" v-for="(service, index) in services" :key="`service-${index}`" :ref="`serviceCard${index}`">
+                        <div class="service-img">
+                            <img :src="service.image" :alt="service.title">
+                        </div>
+                        <div class="service-content">
+                            <h3>{{ service.title }}</h3>
+                            <p>{{ service.description }}</p>
+                            <a href="#" class="btn" :class="service.btnHover ? 'btn-primary' : 'btn-outline'" 
+                               @mouseenter="service.btnHover = true" 
+                               @mouseleave="service.btnHover = false">Saiba Mais</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+      <!-- Counter Section -->
+      <section class="counter">
+          <div class="container">
+              <div class="counter-grid">
+                  <div class="counter-item fade-in" v-for="(stat, index) in stats" :key="`stat-${index}`" :ref="`counterItem${index}`">
+                      <div class="counter-icon"><i :class="stat.icon"></i></div>
+                      <div class="counter-value">{{ stat.current }}</div>
+                      <h4>{{ stat.label }}</h4>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- Partners Section -->
+      <section class="partners">
+        <div class="section-title fade-in" ref="aboutTitle">
+          <h2>Nossos Parceiros</h2>
+          <p>Conheça os nossos parceiros</p>
+    </div>
+        <div class="container">
+            <div class="partners-container">
+                <div class="partners-slider">
+                    <div class="partner-logo" v-for="(partner, index) in partners" :key="`partner-${index}`">
+                        <img :src="partner.logo" :alt="partner.name">
+                    </div>
+                    <!-- Duplica os parceiros para criar o efeito de loop infinito -->
+                    <div class="partner-logo" v-for="(partner, index) in partners" :key="`partner-dup-${index}`">
+                        <img :src="partner.logo" :alt="partner.name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+      <!-- Testimonials Section -->
+      <section id="testimonials" class="testimonials">
+          <div class="container">
+              <div class="section-title fade-in" ref="testimonialsTitle">
+                  <h2>Depoimentos</h2>
+                  <p>O que nossos associados dizem sobre nós</p>
+              </div>
+              
+              <div class="testimonial-slider fade-in" ref="testimonialSlider">
+                  <div class="slider-arrows">
+                      <div class="slider-arrow" @click="prevTestimonial">
+                          <i class="fas fa-chevron-left"></i>
+                      </div>
+                      <div class="slider-arrow" @click="nextTestimonial">
+                          <i class="fas fa-chevron-right"></i>
+                      </div>
+                  </div>
+                  
+                  <div class="testimonial-slides" :style="{ transform: `translateX(-${currentTestimonialSlide * 100}%)` }">
+                      <div class="testimonial-card" v-for="(testimonial, index) in testimonials" :key="`testimonial-${index}`">
+                          <p class="testimonial-text">{{ testimonial.text }}</p>
+                          <div class="testimonial-author">
+                              <img :src="testimonial.photo" :alt="testimonial.name">
+                              <div class="author-info">
+                                  <h4>{{ testimonial.name }}</h4>
+                                  <p>{{ testimonial.company }}</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="testimonial-controls">
+                      <div v-for="(testimonial, index) in testimonials" 
+                            :key="`testimonial-dot-${index}`"
+                            class="testimonial-dot" 
+                            :class="{ active: currentTestimonialSlide === index }"
+                            @click="changeTestimonialSlide(index)"></div>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+      <!-- CTA Section -->
+      <section class="cta">
+          <div class="container">
+              <h2>Pronto para impulsionar seu negócio?</h2>
+              <p>Junte-se à Garanticoop e tenha acesso a soluções financeiras que realmente fazem a diferença para o crescimento do seu empreendimento.</p>
+              <a href="#contact" class="btn btn-accent" @click.prevent="scrollToSection('contact')">Fale com um Agente</a>
+          </div>
+      </section>
+      
+      <!-- Contact Section -->
+      <section id="contact" class="contact">
+          <div class="container">
+              <div class="section-title fade-in" ref="contactTitle">
+                  <h2>Contato</h2>
+                  <p>Estamos prontos para atender você</p>
+              </div>
+              
+              <div class="contact-container">
+                  <div class="contact-info fade-in" ref="contactInfo">
+                      <h3>Entre em Contato</h3>
+                      <p>Preencha o formulário ao lado ou utilize um dos nossos canais de atendimento. Nossa equipe está pronta para esclarecer suas dúvidas e auxiliar no que for necessário.</p>
+                      
+                      <div class="contact-details">
+                          <div class="contact-item">
+                              <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                              <div class="contact-text">
+                                  <h4>Endereço</h4>
+                                  <p>Rua Theobaldo Dreier, 27, 2º Andar - Sala 04</p>
+                                  <p>Jardim Porto Alegre | Toledo - PR, CEP 85906-260</p>
+                              </div>
+                          </div>
+                          
+                          <div class="contact-item">
+                              <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                              <div class="contact-text">
+                                  <h4>Telefones</h4>
+                                  <p>(45) 93252-4435</p>
+                                  <p>(00) 0000-0000</p>
+                              </div>
+                          </div>
+                          
+                          <div class="contact-item">
+                              <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                              <div class="contact-text">
+                                  <h4>E-mail</h4>
+                                  <p>marketing@garanticoop.com.br</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <div class="contact-form fade-in" ref="contactForm">
+                    <!-- HTML para o formulário de contato (substitua o atual) -->
+                    <div class="form-message" :class="contactForm.status" v-if="contactForm.status">{{ contactForm.message }}</div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nome completo" v-model="contactForm.name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="E-mail" v-model="contactForm.email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="tel" class="form-control" placeholder="Telefone" v-model="contactForm.phone" @input="formatContactPhone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <select class="form-control" v-model="contactForm.subject" required>
+                            <option value="" disabled selected>Assunto</option>
+                            <option value="Garantia de Crédito">Garantia de Crédito</option>
+                            <option value="Consultoria Financeira">Consultoria Financeira</option>
+                            <option value="Capacitação Empresarial">Capacitação Empresarial</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Mensagem" v-model="contactForm.message" required></textarea>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary" @click="handleContactFormSubmit()" :disabled="contactForm.sending">
+                        <span v-if="contactForm.sending">Enviando...</span>
+                        <span v-else>Enviar Mensagem</span>
+                    </button>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+      <!-- Footer -->
+      <footer>
+          <div class="container">
+              <div class="footer-container">
+                  <div class="footer-col">
+                      <h3>Garanticoop</h3>
+                      <p>Facilitando o acesso ao crédito para micro e pequenas empresas desde 2010, com soluções que promovem o desenvolvimento econômico e a geração de empregos.</p>
+                      <div class="social-links">
+                          <a href="https://www.facebook.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                          <a href="https://www.linkedin.com/company/garanticoop/posts/?feedView=all" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                          <a href="https://www.instagram.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                          <a href="https://www.youtube.com/@garanticoop" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                      </div>
+                  </div>
+                  
+                  <div class="footer-col">
+                      <h3>Links Rápidos</h3>
+                      <ul class="footer-links">
+                          <li><a href="#" @click.prevent="scrollToSection('home')">Início</a></li>
+                          <li><a href="#about" @click.prevent="scrollToSection('about')">Quem Somos</a></li>
+                          <li><a href="#services" @click.prevent="scrollToSection('services')">Soluções</a></li>
+                          <li><a href="#testimonials" @click.prevent="scrollToSection('testimonials')">Depoimentos</a></li>
+                          <li><a href="#contact" @click.prevent="scrollToSection('contact')">Contato</a></li>
+                      </ul>
+                  </div>
+                  
+                  <div class="footer-col">
+                      <h3>Soluções</h3>
+                      <ul class="footer-links">
+                          <li><a href="#">Garantia de Crédito</a></li>
+                          <li><a href="#">Consultoria Financeira</a></li>
+                          <li><a href="#">Capacitação Empresarial</a></li>
+                          <li><a href="#">Eventos</a></li>
+                          <li><a href="#">Parcerias</a></li>
+                      </ul>
+                  </div>
+                  
+                  <div class="footer-col">
+                      <h3>Atendimento</h3>
+                      <ul class="footer-links">
+                          <li><a href="http://177.107.125.154:3378/" target="_blank">Área do Colaborador</a></li>
+                          <li><a href="#">Área do Associado</a></li>
+                          <li><a href="#">FAQ</a></li>
+                          <li><a href="#">Documentos</a></li>
+                          <li><a href="#">Política de Privacidade</a></li>
+                          <li><a href="#">Termos de Uso</a></li>
+                      </ul>
+                  </div>
+              </div>
+              
+              <div class="footer-bottom">
+                  <p>&copy; {{ currentYear }} Garanticoop - Todos os direitos reservados.</p>
+              </div>
+          </div>
+      </footer>
+      
+      <!-- Whatsapp Button -->
+      <a href="#" class="whatsapp-btn" @click.prevent="openWhatsapp">
+          <i class="fab fa-whatsapp"></i>
+      </a>
+  </div>
+  
+  <!-- Script principal -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
