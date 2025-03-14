@@ -191,7 +191,7 @@ createApp({
                 name: simulationForm.name,
                 email: simulationForm.email,
                 phone: simulationForm.phone,
-                is_whatsapp: simulationForm.isWhatsapp ? 'WhatsApp' : '',  // Altera o formato para exibição direta
+                is_whatsapp: simulationForm.isWhatsapp ? 'WhatsApp' : '', 
                 phone_numbers_only: simulationForm.phone.replace(/\D/g, ''),
                 cpf_cnpj: simulationForm.cpfCnpj,
                 company_name: simulationForm.companyName,

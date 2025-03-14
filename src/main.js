@@ -1,4 +1,4 @@
-const { createApp, ref, reactive, onMounted, computed } = Vue;
+const { createApp, ref, reactive, onMounted, computed, watch } = Vue;
 
 createApp({
     setup() {
@@ -126,6 +126,22 @@ createApp({
             message: ''
         });
         
+        // Função para formatar telefone (atualizada)
+        const formatContactPhone = () => {
+            let value = contactForm.phone.replace(/\D/g, '');
+            
+            if (value.length <= 2) {
+                contactForm.phone = value.length ? `(${value}` : value;
+            } else if (value.length <= 6) {
+                contactForm.phone = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+            } else if (value.length <= 10) {
+                contactForm.phone = `(${value.substring(0, 2)}) ${value.substring(2, 6)}-${value.substring(6)}`;
+            } else {
+                value = value.substring(0, 11);
+                contactForm.phone = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7)}`;
+            }
+        };
+        
         // Current year for footer
         const currentYear = computed(() => new Date().getFullYear());
         
@@ -208,139 +224,17 @@ createApp({
             });
         };
         
-        // Função para formatar o telefone do formulário de contato
-        const formatContactPhone = () => {
-            let value = contactForm.phone.replace(/\D/g, '');
-            
-            if (value.length <= 11) {
-                // Aplica a máscara
-                if (value.length > 2) {
-                    value = '(' + value.substring(0, 2) + ') ' + value.substring(2);
-                }
-                if (value.length > 10) {
-                    value = value.substring(0, 10) + '-' + value.substring(10);
-                }
-            } else {
-                // Limita a 11 dígitos
-                value = value.substring(0, 11);
-                value = '(' + value.substring(0, 2) + ') ' + value.substring(2, 7) + '-' + value.substring(7, 11);
-            }
-            
-            contactForm.phone = value;
-        };
-        
-        // Função para o formulário de contato
-        const handleContactFormSubmit = () => {
-            console.log("Função handleContactFormSubmit chamada");
-            console.log("Valores do formulário:", {
-                name: contactForm.name,
-                email: contactForm.email,
-                phone: contactForm.phone,
-                subject: contactForm.subject,
-                message: contactForm.message
-            });
-            
-            // Verifica se o formulário é válido
-            if (!validateContactForm()) {
-                console.log("Validação falhou");
-                return;
-            }
-            
-            console.log("Validação passou, preparando para enviar");
-            contactForm.sending = true;
-            contactForm.status = '';
-            contactForm.message = '';
-            
-            // Preparação dos dados para o email
-            const templateParams = {
-                name: contactForm.name,
-                email: contactForm.email,
-                phone: contactForm.phone || 'Não informado',
-                subject: contactForm.subject,
-                message: contactForm.message,
-                current_year: new Date().getFullYear(),
-                to_email: 'marketing@garanticoop.com.br'
-            };
-            
-            console.log("Parâmetros do template:", templateParams);
-            console.log("emailjs disponível?", typeof emailjs !== 'undefined');
-            
-            // Verifica se o EmailJS está disponível
-            if (typeof emailjs !== 'undefined') {
-                // Use o service_id correto do EmailJS e um template_id diferente para o contato
-                console.log("Tentando enviar email via EmailJS");
-                emailjs.send('service_iffzqoi', 'template_tlp8t8n', templateParams)
-                    .then(function(response) {
-                        console.log('Email de contato enviado!', response.status, response.text);
-                        handleContactSuccess();
-                    }, function(error) {
-                        console.error('Erro ao enviar email de contato:', error);
-                        handleContactError();
-                    });
-            } else {
-                // Fallback - simulação de envio
-                console.log('EmailJS não encontrado. Simulando envio de contato...');
-                console.log('Dados do formulário de contato:', templateParams);
-                
-                // Simula um delay de processamento
-                setTimeout(() => {
-                    handleContactSuccess();
-                }, 2000);
-            }
-        };
-        
-        // Validação do formulário de contato
+        // Função para validar o formulário (simplificada, mantida por compatibilidade)
         const validateContactForm = () => {
-            // Verifica se o e-mail é válido
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(contactForm.email)) {
-                contactForm.status = 'error';
-                contactForm.message = 'Por favor, informe um endereço de e-mail válido.';
-                return false;
-            }
-            
-            // Verifica se o nome tem pelo menos 3 caracteres
-            if (contactForm.name.trim().length < 3) {
-                contactForm.status = 'error';
-                contactForm.message = 'Por favor, informe seu nome.';
-                return false;
-            }
-            
-            // Verifica se há uma mensagem
-            if (!contactForm.message || contactForm.message.trim().length < 10) {
-                contactForm.status = 'error';
-                contactForm.message = 'Por favor, digite uma mensagem com pelo menos 10 caracteres.';
-                return false;
-            }
-            
+            // As validações estão na função independente, este é um stub
             return true;
         };
         
-        // Função para tratar sucesso no envio do contato
-        const handleContactSuccess = () => {
-            contactForm.sending = false;
-            contactForm.status = 'success';
-            contactForm.message = 'Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.';
-            
-            // Limpa o formulário
-            contactForm.name = '';
-            contactForm.email = '';
-            contactForm.phone = '';
-            contactForm.subject = '';
-            contactForm.message = '';
-            
-            // Remove a mensagem de sucesso após alguns segundos
-            setTimeout(() => {
-                contactForm.status = '';
-                contactForm.message = '';
-            }, 5000);
-        };
-        
-        // Função para tratar erro no envio do contato
-        const handleContactError = () => {
-            contactForm.sending = false;
-            contactForm.status = 'error';
-            contactForm.message = 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.';
+        // Função para o formulário de contato (simplificada, mantida por compatibilidade)
+        const handleContactFormSubmit = (event) => {
+            if (event) event.preventDefault();
+            // A implementação real está na função independente
+            // Esta função fica apenas como fallback
         };
         
         // Abre o WhatsApp
@@ -406,3 +300,326 @@ createApp({
         };
     }
 }).mount('#app');
+
+// Função de envio independente para o formulário de contato
+window.handleContactFormDirectly = function() {
+    console.log("Função de envio do formulário independente iniciada");
+    
+    // Prevenir acionamento duplo
+    if (window.isContactFormSubmitting) {
+        console.log("Envio já em andamento, ignorando clique");
+        return;
+    }
+    
+    window.isContactFormSubmitting = true;
+    
+    // Exibir feedback visual
+    const submitButton = document.querySelector('.contact-form button[type="button"]');
+    const originalButtonText = submitButton.innerHTML;
+    submitButton.innerHTML = '<span>Enviando...</span>';
+    submitButton.disabled = true;
+    
+    // Obter os valores dos campos
+    const nameInput = document.querySelector('.contact-form input[placeholder="Nome completo"]');
+    const emailInput = document.querySelector('.contact-form input[placeholder="E-mail"]');
+    const phoneInput = document.querySelector('.contact-form input[placeholder="Telefone"]');
+    const subjectSelect = document.querySelector('.contact-form select');
+    const messageTextarea = document.querySelector('.contact-form textarea');
+    
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const subject = subjectSelect.value;
+    const message = messageTextarea.value.trim();
+    
+    // Função para exibir mensagem de status no estilo do simulacao.js
+    const showStatus = (message, isError = false) => {
+        // Seleciona o elemento de mensagem de status
+        const statusContainer = document.getElementById('contactStatusMessage');
+        const statusDiv = statusContainer ? statusContainer.querySelector('.form-message') : null;
+        
+        if (statusDiv) {
+            // Define o conteúdo e as classes para estilo
+            statusDiv.innerHTML = message;
+            statusDiv.className = isError ? 'form-message error' : 'form-message success';
+            
+            // Mostra o contêiner de status
+            statusContainer.style.display = 'block';
+            
+            // Se for sucesso, esconde após um tempo
+            if (!isError) {
+                setTimeout(() => {
+                    statusContainer.style.display = 'none';
+                }, 6000);
+            }
+        } else {
+            // Fallback se o elemento não existir
+            isError ? alert(message) : console.log(message);
+        }
+    };
+    
+    // Validações
+    if (!name) {
+        showStatus("Por favor, informe seu nome completo.", true);
+        nameInput.focus();
+        resetForm(false);
+        return;
+    }
+    
+    if (!email || !email.includes('@') || !email.includes('.')) {
+        showStatus("Por favor, informe um e-mail válido.", true);
+        emailInput.focus();
+        resetForm(false);
+        return;
+    }
+    
+    if (!subject) {
+        showStatus("Por favor, selecione um assunto.", true);
+        subjectSelect.focus();
+        resetForm(false);
+        return;
+    }
+    
+    if (!message || message.length < 10) {
+        showStatus("Por favor, digite uma mensagem com pelo menos 10 caracteres.", true);
+        messageTextarea.focus();
+        resetForm(false);
+        return;
+    }
+    
+    // Parâmetros para o EmailJS
+    const templateParams = {
+        name: name,
+        email: email,
+        phone: phone || 'Não informado',
+        subject: subject,
+        message: message,
+        current_year: new Date().getFullYear(),
+        to_email: 'marketing@garanticoop.com.br'
+    };
+    
+    console.log("Dados do formulário:", templateParams);
+    
+    // Limpar mensagens de status anteriores
+    const statusContainer = document.getElementById('contactStatusMessage');
+    if (statusContainer) {
+        statusContainer.style.display = 'none';
+    }
+    
+    // Enviar o email
+    if (typeof emailjs !== 'undefined') {
+        console.log("Enviando email com EmailJS");
+        emailjs.send('service_iffzqoi', 'template_tlp8t8n', templateParams)
+            .then(function(response) {
+                console.log('Email enviado com sucesso!', response.status, response.text);
+                
+                // Limpar os campos
+                nameInput.value = '';
+                emailInput.value = '';
+                phoneInput.value = '';
+                subjectSelect.selectedIndex = 0;
+                messageTextarea.value = '';
+                
+                // Exibir mensagem de sucesso
+                showStatus("Sua mensagem foi enviada com sucesso! Entraremos em contato em breve.");
+                
+                // Resetar estado do botão
+                resetForm(true);
+            })
+            .catch(function(error) {
+                console.error('Erro ao enviar email:', error);
+                showStatus("Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente ou entre em contato pelo WhatsApp.", true);
+                resetForm(true);
+            });
+    } else {
+        console.error("EmailJS não disponível");
+        showStatus("Serviço de email não disponível no momento. Por favor, tente novamente mais tarde ou entre em contato pelo WhatsApp.", true);
+        resetForm(true);
+    }
+    
+    // Função para resetar o estado do formulário
+    function resetForm(complete) {
+        submitButton.innerHTML = originalButtonText;
+        submitButton.disabled = false;
+        window.isContactFormSubmitting = false;
+        
+        // Se o envio foi cancelado, manter os dados
+        if (!complete) {
+            // Atualizar os valores do Vue se possível
+            tryUpdateVueState();
+        }
+    }
+    
+    // Tenta atualizar o estado do Vue para manter sincronizado
+    function tryUpdateVueState() {
+        try {
+            const app = document.querySelector('#app').__vue_app__;
+            if (app && app.config && app.config.globalProperties) {
+                const vm = app.config.globalProperties;
+                if (vm.contactForm) {
+                    vm.contactForm.name = name;
+                    vm.contactForm.email = email;
+                    vm.contactForm.phone = phone;
+                    vm.contactForm.subject = subject;
+                    vm.contactForm.message = message;
+                }
+            }
+        } catch (e) {
+            console.log("Não foi possível atualizar o estado do Vue:", e);
+        }
+    }
+};
+
+// Função melhorada para formatação de telefone
+window.formatPhoneNumber = function(value) {
+    // Remove todos os caracteres não numéricos
+    const digits = value.replace(/\D/g, '');
+    
+    if (digits.length === 0) return '';
+    
+    // Formata como (XX) XXXXX-XXXX para celular ou (XX) XXXX-XXXX para fixo
+    if (digits.length <= 2) {
+        return `(${digits}`;
+    } else if (digits.length <= 6) {
+        return `(${digits.substring(0, 2)}) ${digits.substring(2)}`;
+    } else if (digits.length <= 10) {
+        // Telefone fixo: (XX) XXXX-XXXX
+        return `(${digits.substring(0, 2)}) ${digits.substring(2, 6)}-${digits.substring(6)}`;
+    } else {
+        // Celular: (XX) XXXXX-XXXX (limita a 11 dígitos)
+        return `(${digits.substring(0, 2)}) ${digits.substring(2, 7)}-${digits.substring(7, 11)}`;
+    }
+};
+
+// Configuração da formatação de telefone em tempo real
+window.setupPhoneFormatting = function() {
+    const phoneInput = document.querySelector('.contact-form input[placeholder="Telefone"]');
+    
+    if (phoneInput) {
+        // Remove event listeners anteriores para evitar duplicação
+        const newPhoneInput = phoneInput.cloneNode(true);
+        phoneInput.parentNode.replaceChild(newPhoneInput, phoneInput);
+        
+        // Adiciona o novo event listener
+        newPhoneInput.addEventListener('input', function() {
+            // Guarda a posição do cursor antes da formatação
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            const lastLength = this.value.length;
+            
+            // Formata o valor
+            const originalValue = this.value;
+            const formattedValue = window.formatPhoneNumber(originalValue);
+            
+            // Se o valor formatado for diferente, atualiza
+            if (formattedValue !== originalValue) {
+                this.value = formattedValue;
+                
+                // Ajusta a posição do cursor
+                const newLength = this.value.length;
+                const cursorPos = start + (newLength - lastLength);
+                if (this === document.activeElement) {
+                    this.setSelectionRange(cursorPos, cursorPos);
+                }
+                
+                // Atualiza também o modelo Vue
+                try {
+                    const app = document.querySelector('#app').__vue_app__;
+                    if (app && app.config && app.config.globalProperties) {
+                        const vm = app.config.globalProperties;
+                        if (vm.contactForm) {
+                            vm.contactForm.phone = this.value;
+                        }
+                    }
+                } catch (e) {
+                    console.log("Não foi possível atualizar o modelo Vue:", e);
+                }
+            }
+        });
+        
+        console.log("Formatação de telefone configurada com sucesso.");
+    } else {
+        console.log("Campo de telefone não encontrado.");
+    }
+};
+
+// Sobrescrever a função formatContactPhone original no Vue
+// para usar a nova implementação de formatação
+window.overrideVuePhoneFormat = function() {
+    try {
+        const app = document.querySelector('#app').__vue_app__;
+        if (app && app.config && app.config.globalProperties) {
+            const vm = app.config.globalProperties;
+            if (typeof vm.formatContactPhone === 'function') {
+                // Substitui a implementação original pela nova
+                vm.formatContactPhone = function() {
+                    const phoneInput = document.querySelector('.contact-form input[placeholder="Telefone"]');
+                    if (phoneInput && vm.contactForm) {
+                        vm.contactForm.phone = window.formatPhoneNumber(phoneInput.value);
+                    }
+                };
+                console.log("Função formatContactPhone substituída com sucesso.");
+            }
+        }
+    } catch (e) {
+        console.log("Não foi possível substituir a função formatContactPhone:", e);
+    }
+};
+
+// Inicialização quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    // Configura a formatação de telefone
+    window.setupPhoneFormatting();
+    
+    // Reconfigura após um tempo para garantir que o Vue tenha inicializado
+    setTimeout(window.setupPhoneFormatting, 500);
+    setTimeout(window.setupPhoneFormatting, 1000);
+    
+    // Tenta substituir a função depois que o Vue estiver inicializado
+    setTimeout(window.overrideVuePhoneFormat, 1000);
+    
+    // Verificar se o EmailJS está disponível
+    if (typeof emailjs === 'undefined') {
+        console.error("EmailJS não está disponível. Recarregando o script...");
+        
+        // Tentar recarregar o script
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js";
+        script.onload = function() {
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init("a7vq8iGtTJ92YJ0Dt");
+                console.log("EmailJS carregado com sucesso após recarga");
+            }
+        };
+        document.head.appendChild(script);
+    } else {
+        console.log("EmailJS disponível no carregamento da página");
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para atualizar o ano atual no footer
+    function updateFooterYear() {
+      const currentYear = new Date().getFullYear();
+      
+      // Procura por elementos que contenham o texto "{{ currentYear }}" e substitui
+      const footerTexts = document.querySelectorAll('.footer-bottom p');
+      footerTexts.forEach(element => {
+        if (element.innerHTML.includes('{{ currentYear }}')) {
+          element.innerHTML = element.innerHTML.replace('{{ currentYear }}', currentYear);
+        }
+      });
+      
+      // Também procura por spans específicos para o ano
+      const yearElements = document.querySelectorAll('#current-year');
+      yearElements.forEach(element => {
+        element.textContent = currentYear;
+      });
+    }
+    
+    // Executa imediatamente
+    updateFooterYear();
+    
+    // Executa novamente após um breve atraso (caso o Vue não tenha terminado de renderizar)
+    setTimeout(updateFooterYear, 500);
+  });
