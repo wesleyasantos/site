@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos - Garanticoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Estilos específicos para a página de Documentos */
+        .documents-header {
+            background: linear-gradient(to right, var(--dark), var(--accent));
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .documents-header h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .documents-header p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .documents-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .documents-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .documents-category {
+            margin-bottom: 50px;
+        }
+        
+        .category-title {
+            font-size: 24px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .documents-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .document-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .document-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(140, 225, 150, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .document-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .document-description {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .document-link {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .document-link i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .document-link:hover {
+            color: var(--secondary);
+        }
+        
+        .document-link:hover i {
+            transform: translateX(3px);
+        }
+        
+        .info-box {
+            background-color: rgba(70, 115, 245, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 40px;
+        }
+        
+        .info-box h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .info-box p {
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .info-box ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .info-box li {
+            margin-bottom: 5px;
+            color: var(--gray);
+        }
+        
+        @media (max-width: 768px) {
+            .documents-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container header-container">
+                <a href="/">
+                    <img src="src/public/img/logo.svg" alt="Garanticoop" class="logo-image"/>
+                </a>
+                
+                <nav class="nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="https://parceiro.gestaoar.shop/fenacon/garanticoop" class="nav-link">Certificado Digital
+                        <span class="tooltip-text">Adquira já!</span>
+                    </a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </nav>
+                
+                <div class="mobile-menu-btn" @click="toggleMobileMenu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="mobile-menu" :class="{ active: isMobileMenuOpen }">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </div>
+                
+                <div class="overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+            </div>
+        </header>
+        
+        <!-- Documentos Header -->
+        <section class="documents-header">
+            <div class="container">
+                <h1>Documentos</h1>
+                <p>Acesse nossos documentos institucionais, formulários e materiais informativos</p>
+            </div>
+        </section>
+        
+        <!-- Documentos Section -->
+        <section class="documents-section">
+            <div class="container">
+                <div class="documents-container">
+                    <div class="info-box">
+                        <h3>Informações importantes</h3>
+                        <p>Os documentos abaixo estão disponíveis para download. Caso tenha dificuldades para acessar algum arquivo ou necessite de documentos adicionais, entre em contato com nossa equipe.</p>
+                        <p>É necessário possuir um leitor de PDF instalado para visualizar corretamente os documentos.</p>
+                    </div>
+                    
+                    <div class="documents-category">
+                        <h2 class="category-title">Formulários para solicitação de garantia</h2>
+                        <div class="documents-list">
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="document-title">Formulário de Solicitação de Garantia - PJ</h3>
+                                <p class="document-description">Formulário para empresas solicitarem garantia de crédito.</p>
+                                <a href="#" class="document-link">Baixar formulário <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="document-title">Formulário de Solicitação de Garantia - MEI</h3>
+                                <p class="document-description">Formulário específico para Microempreendedores Individuais.</p>
+                                <a href="#" class="document-link">Baixar formulário <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="document-title">Declaração de Faturamento</h3>
+                                <p class="document-description">Modelo de declaração de faturamento dos últimos 12 meses.</p>
+                                <a href="#" class="document-link">Baixar formulário <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-excel"></i>
+                                </div>
+                                <h3 class="document-title">Planilha de Fluxo de Caixa</h3>
+                                <p class="document-description">Modelo de planilha para projeção de fluxo de caixa.</p>
+                                <a href="#" class="document-link">Baixar planilha <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="documents-category">
+                        <h2 class="category-title">Material Institucional</h2>
+                        <div class="documents-list">
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="document-title">Estatuto da Garanticoop</h3>
+                                <p class="document-description">Estatuto social da Garanticoop com suas finalidades e estrutura organizacional.</p>
+                                <a href="#" class="document-link">Visualizar documento <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="document-title">Relatório Anual 2023</h3>
+                                <p class="document-description">Relatório com as principais atividades e resultados alcançados em 2023.</p>
+                                <a href="#" class="document-link">Baixar relatório <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h3 class="document-title">Apresentação Institucional</h3>
+                                <p class="document-description">Apresentação completa sobre a Garanticoop, sua história e serviços.</p>
+                                <a href="#" class="document-link">Visualizar apresentação <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="documents-category">
+                        <h2 class="category-title">Cartilhas e Materiais Educativos</h2>
+                        <div class="documents-list">
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="document-title">Guia do Empreendedor</h3>
+                                <p class="document-description">Guia com orientações para gestão financeira de pequenos negócios.</p>
+                                <a href="#" class="document-link">Baixar guia <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="document-title">Cartilha sobre Garantias</h3>
+                                <p class="document-description">Material explicativo sobre os tipos de garantias de crédito disponíveis.</p>
+                                <a href="#" class="document-link">Baixar cartilha <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            
+                            <div class="document-card">
+                                <div class="document-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="document-title">Como preparar sua empresa para obter crédito</h3>
+                                <p class="document-description">Dicas práticas para aumentar as chances de aprovação de crédito.</p>
+                                <a href="#" class="document-link">Baixar material <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <h3>Garanticoop</h3>
+                        <p>Facilitando o acesso ao crédito para micro e pequenas empresas desde 2010, com soluções que promovem o desenvolvimento econômico e a geração de empregos.</p>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.linkedin.com/company/garanticoop/posts/?feedView=all" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@garanticoop" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Links Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="/">Início</a></li>
+                            <li><a href="/#about">Quem Somos</a></li>
+                            <li><a href="/#services">Soluções</a></li>
+                            <li><a href="/#testimonials">Depoimentos</a></li>
+                            <li><a href="/#contact">Contato</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Soluções</h3>
+                        <ul class="footer-links">
+                            <li><a href="/#services">Garantia de Crédito</a></li>
+                            <li><a href="/#services">Consultoria Financeira</a></li>
+                            <li><a href="/#services">Capacitação Empresarial</a></li>
+                            <li><a href="#">Eventos</a></li>
+                            <li><a href="#">Parcerias</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Atendimento</h3>
+                        <ul class="footer-links">
+                            <li><a href="http://177.107.125.154:3378/" target="_blank">Área do Colaborador</a></li>
+                            <li><a href="#">Área do Associado</a></li>
+                            <li><a href="/faq.html">FAQ</a></li>
+                            <li><a href="/documentos.html" class="active">Documentos</a></li>
+                            <li><a href="/politica-de-privacidade.html">Política de Privacidade</a></li>
+                            <li><a href="/termos-de-uso.html">Termos de Uso</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; {{ currentYear }} Garanticoop - Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Whatsapp Button -->
+        <a href="#" class="whatsapp-btn" @click.prevent="openWhatsapp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para atualizar o ano atual no footer
+            function updateFooterYear() {
+                const currentYear = new Date().getFullYear();
+                
+                // Procura por elementos que contenham o texto "{{ currentYear }}" e substitui
+                const footerTexts = document.querySelectorAll('.footer-bottom p');
+                footerTexts.forEach(element => {
+                    if (element.innerHTML.includes('{{ currentYear }}')) {
+                        element.innerHTML = element.innerHTML.replace('{{ currentYear }}', currentYear);
+                    }
+                });
+            }
+            
+            // Executa imediatamente
+            updateFooterYear();
+            
+            // Executa novamente após um breve atraso (caso o Vue não tenha terminado de renderizar)
+            setTimeout(updateFooterYear, 500);
+        });
+        
+        const { createApp, ref, computed } = Vue;
+        
+        createApp({
+            setup() {
+                // Mobile menu state
+                const isMobileMenuOpen = ref(false);
+                
+                // Current year for footer
+                const currentYear = computed(() => new Date().getFullYear());
+                
+                // Methods
+                const toggleMobileMenu = () => {
+                    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+                };
+                
+                const closeMobileMenu = () => {
+                    isMobileMenuOpen.value = false;
+                };
+                
+                // Abre o WhatsApp
+                const openWhatsapp = () => {
+                    window.open('https://wa.me/554532524435?text=Olá, gostaria de mais informações sobre os documentos da Garanticoop. Poderia me ajudar?', '_blank');
+                };
+                
+                return {
+                    isMobileMenuOpen,
+                    currentYear,
+                    toggleMobileMenu,
+                    closeMobileMenu,
+                    openWhatsapp,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

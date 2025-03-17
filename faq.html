@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguntas Frequentes - Garanticoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Estilos específicos para a página FAQ */
+        .faq-header {
+            background: linear-gradient(to right, var(--dark), var(--accent));
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .faq-header h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .faq-header p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .faq-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .category-tab {
+            padding: 10px 20px;
+            background-color: var(--white);
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .category-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-tab.active {
+            background-color: var(--primary);
+            color: var(--dark);
+        }
+        
+        .faq-search {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .faq-search input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-left: 50px;
+            border-radius: 30px;
+            border: 1px solid var(--lighter-gray);
+            font-size: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(140, 225, 150, 0.2);
+        }
+        
+        .faq-search i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .faq-list {
+            margin-bottom: 40px;
+        }
+        
+        .faq-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--primary);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-top: 0px solid var(--lighter-gray);
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 1000px;
+            border-top: 1px solid var(--lighter-gray);
+        }
+        
+        .faq-answer p {
+            margin: 15px 0;
+            color: var(--gray);
+        }
+        
+        .faq-answer a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .faq-answer a:hover {
+            color: var(--secondary);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: 10px;
+            color: var(--gray);
+        }
+        
+        .contact-cta {
+            text-align: center;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .contact-cta h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .contact-cta p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .faq-categories {
+                gap: 10px;
+            }
+            
+            .category-tab {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
+            .faq-question {
+                padding: 15px;
+            }
+            
+            .faq-item.active .faq-answer {
+                padding: 0 15px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container header-container">
+                <a href="/">
+                    <img src="src/public/img/logo.svg" alt="Garanticoop" class="logo-image"/>
+                </a>
+                
+                <nav class="nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="https://parceiro.gestaoar.shop/fenacon/garanticoop" class="nav-link">Certificado Digital
+                        <span class="tooltip-text">Adquira já!</span>
+                    </a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </nav>
+                
+                <div class="mobile-menu-btn" @click="toggleMobileMenu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="mobile-menu" :class="{ active: isMobileMenuOpen }">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </div>
+                
+                <div class="overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+            </div>
+        </header>
+        
+        <!-- FAQ Header -->
+        <section class="faq-header">
+            <div class="container">
+                <h1>Perguntas Frequentes</h1>
+                <p>Encontre respostas para as dúvidas mais comuns sobre a Garanticoop e nossos serviços de garantia de crédito</p>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <div class="faq-container">
+                    <div class="faq-categories">
+                        <div class="category-tab" 
+                             :class="{ active: currentCategory === 'todas' }"
+                             @click="changeCategory('todas')">
+                            Todas
+                        </div>
+                        <div class="category-tab" 
+                             :class="{ active: currentCategory === 'sobre' }"
+                             @click="changeCategory('sobre')">
+                            Sobre a Garanticoop
+                        </div>
+                        <div class="category-tab" 
+                             :class="{ active: currentCategory === 'garantias' }"
+                             @click="changeCategory('garantias')">
+                            Garantias
+                        </div>
+                        <div class="category-tab" 
+                             :class="{ active: currentCategory === 'credito' }"
+                             @click="changeCategory('credito')">
+                            Crédito
+                        </div>
+                        <div class="category-tab" 
+                             :class="{ active: currentCategory === 'processo' }"
+                             @click="changeCategory('processo')">
+                            Processo
+                        </div>
+                    </div>
+                    
+                    <div class="faq-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Pesquisar perguntas..." v-model="searchQuery">
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div v-if="filteredFaqs.length === 0" class="no-results">
+                            <p>Nenhuma pergunta encontrada com os termos pesquisados.</p>
+                            <p>Por favor, tente outros termos ou entre em contato conosco.</p>
+                        </div>
+                        
+                        <div v-for="(faq, index) in filteredFaqs" 
+                             :key="index" 
+                             class="faq-item"
+                             :class="{ active: faq.isOpen }">
+                            <div class="faq-question" @click="toggleFaq(faq)">
+                                <span>{{ faq.question }}</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p v-html="faq.answer"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-cta">
+                        <h3>Não encontrou o que procurava?</h3>
+                        <p>Nossa equipe está à disposição para esclarecer todas as suas dúvidas sobre os serviços da Garanticoop.</p>
+                        <div class="contact-buttons">
+                            <a href="/#contact" class="btn btn-primary">Entre em Contato</a>
+                            <a href="#" class="btn btn-outline" @click.prevent="openWhatsapp">Fale pelo WhatsApp</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <h3>Garanticoop</h3>
+                        <p>Facilitando o acesso ao crédito para micro e pequenas empresas desde 2010, com soluções que promovem o desenvolvimento econômico e a geração de empregos.</p>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.linkedin.com/company/garanticoop/posts/?feedView=all" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@garanticoop" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Links Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="/">Início</a></li>
+                            <li><a href="/#about">Quem Somos</a></li>
+                            <li><a href="/#services">Soluções</a></li>
+                            <li><a href="/#testimonials">Depoimentos</a></li>
+                            <li><a href="/#contact">Contato</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Soluções</h3>
+                        <ul class="footer-links">
+                            <li><a href="/#services">Garantia de Crédito</a></li>
+                            <li><a href="/#services">Consultoria Financeira</a></li>
+                            <li><a href="/#services">Capacitação Empresarial</a></li>
+                            <li><a href="#">Eventos</a></li>
+                            <li><a href="#">Parcerias</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Atendimento</h3>
+                        <ul class="footer-links">
+                            <li><a href="http://177.107.125.154:3378/" target="_blank">Área do Colaborador</a></li>
+                            <li><a href="#">Área do Associado</a></li>
+                            <li><a href="/faq.html" class="active">FAQ</a></li>
+                            <li><a href="#">Documentos</a></li>
+                            <li><a href="#">Política de Privacidade</a></li>
+                            <li><a href="#">Termos de Uso</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; {{ currentYear }} Garanticoop - Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Whatsapp Button -->
+        <a href="#" class="whatsapp-btn" @click.prevent="openWhatsapp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para atualizar o ano atual no footer
+            function updateFooterYear() {
+                const currentYear = new Date().getFullYear();
+                
+                // Procura por elementos que contenham o texto "{{ currentYear }}" e substitui
+                const footerTexts = document.querySelectorAll('.footer-bottom p');
+                footerTexts.forEach(element => {
+                    if (element.innerHTML.includes('{{ currentYear }}')) {
+                        element.innerHTML = element.innerHTML.replace('{{ currentYear }}', currentYear);
+                    }
+                });
+            }
+            
+            // Executa imediatamente
+            updateFooterYear();
+            
+            // Executa novamente após um breve atraso (caso o Vue não tenha terminado de renderizar)
+            setTimeout(updateFooterYear, 500);
+        });
+        
+        const { createApp, ref, reactive, computed } = Vue;
+        
+        createApp({
+            setup() {
+                // Mobile menu state
+                const isMobileMenuOpen = ref(false);
+                
+                // FAQ state
+                const currentCategory = ref('todas');
+                const searchQuery = ref('');
+                
+                // FAQ data
+                const faqs = reactive([
+                    {
+                        question: "O que é a Garanticoop?",
+                        answer: "A Garanticoop é uma Sociedade de Garantia de Crédito (SGC) criada para facilitar o acesso ao crédito para micro e pequenas empresas. Atuamos como avalistas de operações de crédito, oferecendo garantias complementares para as instituições financeiras, o que permite condições mais favoráveis e taxas reduzidas para os empreendedores.",
+                        category: "sobre",
+                        isOpen: false
+                    },
+                    {
+                        question: "Desde quando a Garanticoop atua no mercado?",
+                        answer: "A Garanticoop atua no mercado desde 2010, facilitando o acesso ao crédito para milhares de micro e pequenas empresas, contribuindo para o desenvolvimento econômico regional e a geração de empregos.",
+                        category: "sobre",
+                        isOpen: false
+                    },
+                    {
+                        question: "Onde a Garanticoop está localizada?",
+                        answer: "Nossa sede está localizada em Toledo - PR, na Rua Theobaldo Dreier, 27, 2º Andar - Sala 04, Jardim Porto Alegre, CEP 85906-260. Atendemos empresas de toda a região.",
+                        category: "sobre",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quais são os principais serviços oferecidos pela Garanticoop?",
+                        answer: "Oferecemos principalmente: <br>1. <strong>Garantia de Crédito</strong>: Atuamos como avalistas de operações de crédito, facilitando o acesso a financiamentos com taxas mais atrativas. <br>2. <strong>Consultoria Financeira</strong>: Nossa equipe especializada oferece orientação personalizada para identificar a melhor solução de crédito para o seu negócio. <br>3. <strong>Capacitação Empresarial</strong>: Promovemos cursos e workshops para capacitar empreendedores em gestão financeira e planejamento estratégico.",
+                        category: "sobre",
+                        isOpen: false
+                    },
+                    {
+                        question: "O que é uma garantia de crédito?",
+                        answer: "Uma garantia de crédito é um instrumento que funciona como um respaldo para a instituição financeira, reduzindo o risco da operação de crédito. A Garanticoop atua como avalista, fornecendo essa garantia complementar que permite o acesso ao crédito com condições mais favoráveis para empresas que, muitas vezes, não possuem garantias suficientes exigidas pelos bancos.",
+                        category: "garantias",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quais tipos de garantias a Garanticoop oferece?",
+                        answer: "A Garanticoop oferece principalmente garantias fidejussórias (aval/fiança) para operações de crédito. Isso significa que nos colocamos como avalistas da operação, reduzindo o risco para a instituição financeira e facilitando a aprovação do crédito para o empreendedor. O percentual de cobertura da garantia varia conforme a análise de cada caso e o tipo de operação.",
+                        category: "garantias",
+                        isOpen: false
+                    },
+                    {
+                        question: "Qual o percentual de garantia oferecido pela Garanticoop?",
+                        answer: "O percentual de garantia pode variar entre 20% e 80% do valor total da operação, dependendo da análise de risco, do tipo de operação, da finalidade do crédito e das condições negociadas com a instituição financeira parceira. O percentual exato é definido durante o processo de análise da solicitação.",
+                        category: "garantias",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quais são as vantagens de utilizar as garantias da Garanticoop?",
+                        answer: "As principais vantagens são: <br>• Acesso facilitado ao crédito, mesmo para empresas com garantias insuficientes <br>• Taxas de juros mais atrativas <br>• Condições de pagamento mais favoráveis <br>• Prazos maiores para pagamento <br>• Processo de aprovação mais ágil <br>• Possibilidade de aprovação para valores maiores <br>• Consultoria financeira especializada",
+                        category: "garantias",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quais tipos de crédito podem ser obtidos com a garantia da Garanticoop?",
+                        answer: "Com a garantia da Garanticoop, é possível obter diversas modalidades de crédito, como: <br>• Capital de giro <br>• Investimentos em infraestrutura <br>• Aquisição de máquinas e equipamentos <br>• Expansão do negócio <br>• Energia fotovoltaica <br>• Crédito rural <br>• Financiamento para inovação e tecnologia <br>• Entre outras finalidades específicas para micro e pequenas empresas",
+                        category: "credito",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quais são os valores mínimos e máximos para operações com a Garanticoop?",
+                        answer: "Os valores das operações com garantia da Garanticoop podem variar de R$ 10.000,00 até R$ 500.000,00, dependendo do porte da empresa, faturamento, capacidade de pagamento e finalidade do crédito. Para operações com valores específicos, recomendamos entrar em contato com nossa equipe para uma análise personalizada.",
+                        category: "credito",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quais são as taxas de juros das operações garantidas pela Garanticoop?",
+                        answer: "As taxas de juros são definidas pelas instituições financeiras parceiras, mas geralmente são mais competitivas quando comparadas às operações sem garantia. Com o aval da Garanticoop, as empresas conseguem acessar linhas de crédito com condições diferenciadas, podendo obter reduções significativas nas taxas, o que resulta em uma economia considerável ao longo do financiamento.",
+                        category: "credito",
+                        isOpen: false
+                    },
+                    {
+                        question: "Com quais instituições financeiras a Garanticoop tem parceria?",
+                        answer: "A Garanticoop mantém parcerias estratégicas com diversas instituições financeiras, incluindo: <br>• Cooperativas de crédito (Sicoob, Sicredi, Cresol, Unicred, Uniprime) <br>• Bancos convencionais <br>• BRDE (Banco Regional de Desenvolvimento do Extremo Sul) <br>• Fomento Paraná <br>• Entre outras instituições financeiras da região",
+                        category: "credito",
+                        isOpen: false
+                    },
+                    {
+                        question: "Quem pode solicitar as garantias da Garanticoop?",
+                        answer: "As garantias da Garanticoop estão disponíveis para: <br>• Microempreendedores Individuais (MEI) <br>• Microempresas <br>• Empresas de Pequeno Porte <br>• Empresários individuais <br>• Produtores rurais <br>• Cooperativas de pequeno porte <br><br>É necessário que a empresa esteja regularmente constituída, com documentação em dia e atuando dentro da área de abrangência da Garanticoop.",
+                        category: "processo",
+                        isOpen: false
+                    },
+                    {
+                        question: "Como solicitar uma garantia de crédito da Garanticoop?",
+                        answer: "O processo para solicitar uma garantia de crédito envolve os seguintes passos: <br>1. Preencha o formulário de simulação em nosso site ou entre em contato conosco <br>2. Nossa equipe realizará uma análise preliminar e entrará em contato para agendar uma reunião <br>3. Apresente a documentação necessária para análise <br>4. Após a aprovação da garantia, encaminhamos para a instituição financeira parceira <br>5. A instituição financeira realiza sua análise e, se aprovado, libera o crédito <br><br>Para iniciar o processo, acesse nossa <a href='/simulacao.html'>página de simulação</a> ou entre em contato com nossa equipe.",
+                        category: "processo",
+                        isOpen: false
+                    },
+                    {
+                        question: "Qual a documentação necessária para solicitar uma garantia?",
+                        answer: "A documentação básica inclui: <br>• Documentos pessoais dos sócios (RG e CPF) <br>• Comprovante de residência dos sócios <br>• Contrato social e alterações ou MEI <br>• Cartão CNPJ <br>• Últimas declarações de Imposto de Renda (pessoa física e jurídica) <br>• Faturamento dos últimos 12 meses <br>• Extrato bancário dos últimos 3 meses <br>• Relação de bens (se houver) <br><br>Documentos adicionais podem ser solicitados conforme a necessidade de cada operação.",
+                        category: "processo",
+                        isOpen: false
+                    },
+                    {
+                        question: "Qual o prazo para análise e aprovação da garantia?",
+                        answer: "O prazo médio para análise e aprovação da garantia pela Garanticoop é de 3 a 5 dias úteis após o recebimento de toda a documentação necessária. Após a aprovação da garantia, o processo segue para a instituição financeira parceira, que possui seus próprios prazos de análise, os quais podem variar de acordo com a instituição e o tipo de operação.",
+                        category: "processo",
+                        isOpen: false
+                    },
+                    {
+                        question: "Existe algum custo para solicitar uma garantia da Garanticoop?",
+                        answer: "Sim, existem custos associados à concessão da garantia, que geralmente incluem: <br>• Taxa de análise de crédito (paga no momento da solicitação) <br>• Comissão pela garantia concedida (percentual sobre o valor garantido, que pode ser paga à vista ou parcelada) <br>• Associação à Garanticoop (quando aplicável) <br><br>Os valores específicos variam de acordo com o montante da operação, o risco envolvido e o prazo. Durante o processo de análise, apresentamos todos os custos de forma transparente para que o empreendedor possa tomar uma decisão informada.",
+                        category: "processo",
+                        isOpen: false
+                    },
+                    {
+                        question: "O que acontece se eu não conseguir pagar o financiamento garantido pela Garanticoop?",
+                        answer: "Se houver dificuldade no pagamento do financiamento, é essencial entrar em contato imediatamente com a Garanticoop e com a instituição financeira. Podemos auxiliar na renegociação de condições para evitar maiores problemas. Em caso de inadimplência persistente, a Garanticoop, como avalista, será acionada pela instituição financeira para honrar a parcela garantida da dívida. Posteriormente, a Garanticoop poderá entrar com processo de cobrança e recuperação do valor pago.",
+                        category: "processo",
+                        isOpen: false
+                    }
+                ]);
+                
+                // Computed properties
+                const filteredFaqs = computed(() => {
+                    let result = faqs;
+                    
+                    if (currentCategory.value !== 'todas') {
+                        result = result.filter(faq => faq.category === currentCategory.value);
+                    }
+                    
+                    if (searchQuery.value.trim() !== '') {
+                        const query = searchQuery.value.toLowerCase();
+                        result = result.filter(faq => 
+                            faq.question.toLowerCase().includes(query) || 
+                            faq.answer.toLowerCase().includes(query)
+                        );
+                    }
+                    
+                    return result;
+                });
+                
+                // Current year for footer
+                const currentYear = computed(() => new Date().getFullYear());
+                
+                // Methods
+                const toggleMobileMenu = () => {
+                    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+                };
+                
+                const closeMobileMenu = () => {
+                    isMobileMenuOpen.value = false;
+                };
+                
+                const changeCategory = (category) => {
+                    currentCategory.value = category;
+                    // Reset search when changing category
+                    searchQuery.value = '';
+                    // Close all FAQs
+                    faqs.forEach(faq => faq.isOpen = false);
+                };
+                
+                const toggleFaq = (faq) => {
+                    faq.isOpen = !faq.isOpen;
+                };
+                
+                // Abre o WhatsApp
+                const openWhatsapp = () => {
+                    window.open('https://wa.me/554532524435?text=Olá, tenho uma dúvida sobre os serviços da Garanticoop. Poderia me ajudar?', '_blank');
+                };
+                
+                return {
+                    isMobileMenuOpen,
+                    currentCategory,
+                    searchQuery,
+                    faqs,
+                    filteredFaqs,
+                    currentYear,
+                    toggleMobileMenu,
+                    closeMobileMenu,
+                    changeCategory,
+                    toggleFaq,
+                    openWhatsapp,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

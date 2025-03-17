@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade - Garanticoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Estilos específicos para a página de Política de Privacidade */
+        .privacy-header {
+            background: linear-gradient(to right, var(--dark), var(--accent));
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .privacy-header h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .privacy-header p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .privacy-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .privacy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .last-update {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .privacy-content h2 {
+            font-size: 24px;
+            color: var(--dark);
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--lighter-gray);
+        }
+        
+        .privacy-content h3 {
+            font-size: 20px;
+            color: var(--secondary);
+            margin: 25px 0 15px;
+        }
+        
+        .privacy-content p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: var(--gray);
+        }
+        
+        .privacy-content ul, .privacy-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .privacy-content li {
+            margin-bottom: 10px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        .privacy-content a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .privacy-content a:hover {
+            color: var(--secondary);
+        }
+        
+        .table-of-contents {
+            background-color: rgba(70, 115, 245, 0.05);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .table-of-contents h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .table-of-contents ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .table-of-contents li {
+            margin-bottom: 8px;
+        }
+        
+        .table-of-contents a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .table-of-contents a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .highlight-box {
+            background-color: rgba(140, 225, 150, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .privacy-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container header-container">
+                <a href="/">
+                    <img src="src/public/img/logo.svg" alt="Garanticoop" class="logo-image"/>
+                </a>
+                
+                <nav class="nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="https://parceiro.gestaoar.shop/fenacon/garanticoop" class="nav-link">Certificado Digital
+                        <span class="tooltip-text">Adquira já!</span>
+                    </a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </nav>
+                
+                <div class="mobile-menu-btn" @click="toggleMobileMenu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="mobile-menu" :class="{ active: isMobileMenuOpen }">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </div>
+                
+                <div class="overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+            </div>
+        </header>
+        
+        <!-- Privacy Header -->
+        <section class="privacy-header">
+            <div class="container">
+                <h1>Política de Privacidade</h1>
+                <p>Conheça como tratamos e protegemos seus dados pessoais</p>
+            </div>
+        </section>
+        
+        <!-- Privacy Content Section -->
+        <section class="privacy-section">
+            <div class="container">
+                <div class="privacy-container">
+                    <p class="last-update">Última atualização: 10 de março de 2025</p>
+                    
+                    <div class="table-of-contents">
+                        <h3>Sumário</h3>
+                        <ul>
+                            <li><a href="#introducao">1. Introdução</a></li>
+                            <li><a href="#dados-coletados">2. Dados que coletamos</a></li>
+                            <li><a href="#finalidades">3. Como utilizamos seus dados</a></li>
+                            <li><a href="#compartilhamento">4. Compartilhamento de dados</a></li>
+                            <li><a href="#armazenamento">5. Armazenamento e segurança</a></li>
+                            <li><a href="#direitos">6. Seus direitos</a></li>
+                            <li><a href="#cookies">7. Cookies e tecnologias semelhantes</a></li>
+                            <li><a href="#alteracoes">8. Alterações na política</a></li>
+                            <li><a href="#contato">9. Como entrar em contato</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="privacy-content">
+                        <h2 id="introducao">1. Introdução</h2>
+                        <p>A Garanticoop está comprometida em proteger sua privacidade e seus dados pessoais. Esta Política de Privacidade descreve como coletamos, usamos, compartilhamos e protegemos suas informações pessoais quando você utiliza nossos serviços, visita nosso site ou interage conosco de qualquer forma.</p>
+                        <p>Nós processamos seus dados pessoais em conformidade com a Lei Geral de Proteção de Dados (LGPD), Lei nº 13.709/2018, e outras legislações aplicáveis sobre proteção de dados. Recomendamos a leitura atenta desta política para entender nossas práticas em relação aos seus dados pessoais.</p>
+                        
+                        <div class="highlight-box">
+                            <p>Ao utilizar nossos serviços, você concorda com a coleta e uso de informações de acordo com esta política. Se você não concordar com algum aspecto desta política, por favor, não utilize nossos serviços.</p>
+                        </div>
+                        
+                        <h2 id="dados-coletados">2. Dados que coletamos</h2>
+                        <p>Podemos coletar os seguintes tipos de informações pessoais:</p>
+                        
+                        <h3>2.1. Informações que você nos fornece</h3>
+                        <ul>
+                            <li><strong>Dados de identificação:</strong> nome completo, CPF, RG, data de nascimento, estado civil, nacionalidade;</li>
+                            <li><strong>Dados de contato:</strong> endereço, e-mail, telefone, WhatsApp;</li>
+                            <li><strong>Dados profissionais e financeiros:</strong> CNPJ, razão social, ramo de atividade, faturamento, informações sobre crédito, dados bancários;</li>
+                            <li><strong>Documentos:</strong> contratos sociais, declarações de imposto de renda, extratos bancários, comprovantes de residência;</li>
+                            <li><strong>Informações de cadastro:</strong> login, senha e outras credenciais usadas para acessar nossos serviços.</li>
+                        </ul>
+                        
+                        <h3>2.2. Informações coletadas automaticamente</h3>
+                        <ul>
+                            <li><strong>Dados de uso:</strong> informações sobre como você utiliza nosso site, incluindo páginas visitadas, tempo de permanência, links clicados;</li>
+                            <li><strong>Dados do dispositivo:</strong> tipo de dispositivo, sistema operacional, navegador, endereço IP;</li>
+                            <li><strong>Dados de localização:</strong> informações sobre sua localização geográfica aproximada, quando você acessa nosso site.</li>
+                        </ul>
+                        
+                        <h2 id="finalidades">3. Como utilizamos seus dados</h2>
+                        <p>Utilizamos seus dados pessoais para as seguintes finalidades:</p>
+                        
+                        <h3>3.1. Prestação de serviços</h3>
+                        <ul>
+                            <li>Análise e concessão de garantias de crédito;</li>
+                            <li>Elaboração de contratos e documentos relacionados às garantias;</li>
+                            <li>Intermediação entre você e as instituições financeiras;</li>
+                            <li>Consultoria financeira e atendimento personalizado;</li>
+                            <li>Processamento de pagamentos e cobranças.</li>
+                        </ul>
+                        
+                        <h3>3.2. Comunicação</h3>
+                        <ul>
+                            <li>Envio de informações sobre seus contratos e garantias;</li>
+                            <li>Resposta às suas solicitações e dúvidas;</li>
+                            <li>Envio de comunicados importantes sobre nossos serviços;</li>
+                            <li>Notificações sobre alterações em nossas políticas.</li>
+                        </ul>
+                        
+                        <h3>3.3. Marketing (mediante consentimento)</h3>
+                        <ul>
+                            <li>Envio de informativos sobre nossos serviços;</li>
+                            <li>Divulgação de promoções, eventos e oportunidades;</li>
+                            <li>Pesquisas de satisfação e feedback.</li>
+                        </ul>
+                        
+                        <h3>3.4. Cumprimento de obrigações legais</h3>
+                        <ul>
+                            <li>Atendimento a exigências regulatórias;</li>
+                            <li>Prevenção à fraude e lavagem de dinheiro;</li>
+                            <li>Cumprimento de ordens judiciais e administrativas.</li>
+                        </ul>
+                        
+                        <h2 id="compartilhamento">4. Compartilhamento de dados</h2>
+                        <p>Podemos compartilhar seus dados pessoais com as seguintes categorias de destinatários:</p>
+                        
+                        <h3>4.1. Parceiros e provedores de serviços</h3>
+                        <ul>
+                            <li>Instituições financeiras parceiras (bancos e cooperativas de crédito);</li>
+                            <li>Prestadores de serviços de análise de crédito;</li>
+                            <li>Prestadores de serviços de tecnologia e armazenamento de dados;</li>
+                            <li>Consultores e assessores jurídicos, contábeis e financeiros.</li>
+                        </ul>
+                        
+                        <h3>4.2. Autoridades e órgãos reguladores</h3>
+                        <ul>
+                            <li>Órgãos governamentais, quando exigido por lei;</li>
+                            <li>Autoridades judiciais, mediante ordem judicial;</li>
+                            <li>Entidades reguladoras do setor financeiro.</li>
+                        </ul>
+                        
+                        <p>Todos os terceiros com quem compartilhamos seus dados são obrigados a manter a confidencialidade e segurança dessas informações e a utilizá-las apenas para as finalidades específicas que determinamos.</p>
+                        
+                        <h2 id="armazenamento">5. Armazenamento e segurança</h2>
+                        <p>Adotamos medidas técnicas e organizacionais apropriadas para proteger seus dados pessoais contra acesso não autorizado, alteração, divulgação ou destruição indevida. Estas medidas incluem:</p>
+                        
+                        <ul>
+                            <li>Criptografia de dados sensíveis;</li>
+                            <li>Controles de acesso rigorosos aos sistemas e bancos de dados;</li>
+                            <li>Monitoramento contínuo de ameaças e vulnerabilidades;</li>
+                            <li>Treinamento regular de nossa equipe sobre práticas de segurança e proteção de dados.</li>
+                        </ul>
+                        
+                        <p>Mantemos seus dados pelo tempo necessário para cumprir as finalidades descritas nesta política, salvo se um período de retenção mais longo for exigido ou permitido por lei.</p>
+                        
+                        <h2 id="direitos">6. Seus direitos</h2>
+                        <p>De acordo com a LGPD, você possui os seguintes direitos em relação aos seus dados pessoais:</p>
+                        
+                        <ul>
+                            <li><strong>Confirmação e acesso:</strong> direito de saber se tratamos seus dados e de acessar esses dados;</li>
+                            <li><strong>Correção:</strong> direito de solicitar a correção de dados incompletos, inexatos ou desatualizados;</li>
+                            <li><strong>Anonimização, bloqueio ou eliminação:</strong> direito de solicitar estas ações para dados desnecessários, excessivos ou tratados em desconformidade com a LGPD;</li>
+                            <li><strong>Portabilidade:</strong> direito de obter seus dados em formato que permita a transferência para outro fornecedor de serviço;</li>
+                            <li><strong>Informação sobre compartilhamento:</strong> direito de saber com quais entidades públicas e privadas compartilhamos seus dados;</li>
+                            <li><strong>Revogação do consentimento:</strong> direito de retirar seu consentimento a qualquer momento;</li>
+                            <li><strong>Oposição:</strong> direito de se opor ao tratamento que não esteja em conformidade com a lei.</li>
+                        </ul>
+                        
+                        <p>Para exercer qualquer desses direitos, entre em contato conosco pelos meios indicados na seção "Como entrar em contato".</p>
+                        
+                        <h2 id="cookies">7. Cookies e tecnologias semelhantes</h2>
+                        <p>Utilizamos cookies e tecnologias semelhantes para melhorar sua experiência em nosso site, entender como você o utiliza e personalizar nossos serviços.</p>
+                        
+                        <h3>7.1. Tipos de cookies que utilizamos</h3>
+                        <ul>
+                            <li><strong>Cookies essenciais:</strong> necessários para o funcionamento básico do site;</li>
+                            <li><strong>Cookies de desempenho:</strong> coletam informações sobre como os usuários navegam em nosso site;</li>
+                            <li><strong>Cookies de funcionalidade:</strong> permitem que o site lembre de escolhas que você faz;</li>
+                            <li><strong>Cookies de marketing:</strong> rastreiam atividades entre sites para criar perfis de interesses e mostrar anúncios relevantes.</li>
+                        </ul>
+                        
+                        <p>Você pode gerenciar as configurações de cookies através do seu navegador, incluindo a opção de recusar todos ou alguns cookies. No entanto, se você desativar cookies essenciais, algumas funcionalidades do site podem não funcionar corretamente.</p>
+                        
+                        <h2 id="alteracoes">8. Alterações na política</h2>
+                        <p>Podemos atualizar esta Política de Privacidade periodicamente para refletir mudanças em nossas práticas de tratamento de dados ou em decorrência de novas exigências legais. Recomendamos que você revise esta política regularmente. A data da última atualização está indicada no início do documento.</p>
+                        
+                        <p>Alterações significativas serão comunicadas através de nosso site ou por outros meios de contato que tivermos com você, como e-mail.</p>
+                        
+                        <h2 id="contato">9. Como entrar em contato</h2>
+                        <p>Se você tiver dúvidas, preocupações ou solicitações relacionadas a esta Política de Privacidade ou ao tratamento de seus dados pessoais, entre em contato com nosso Encarregado de Proteção de Dados (DPO):</p>
+                        
+                        <p><strong>E-mail:</strong> privacidade@garanticoop.com.br<br>
+                        <strong>Telefone:</strong> (45) 3252-4435<br>
+                        <strong>Endereço:</strong> Rua Theobaldo Dreier, 27, 2º Andar - Sala 04, Jardim Porto Alegre, Toledo - PR, CEP 85906-260</p>
+                        
+                        <div class="highlight-box">
+                            <p>Estamos comprometidos em resolver suas dúvidas e preocupações sobre o tratamento de seus dados pessoais. Se você não estiver satisfeito com nossa resposta, você tem o direito de apresentar uma reclamação à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <h3>Garanticoop</h3>
+                        <p>Facilitando o acesso ao crédito para micro e pequenas empresas desde 2010, com soluções que promovem o desenvolvimento econômico e a geração de empregos.</p>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.linkedin.com/company/garanticoop/posts/?feedView=all" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@garanticoop" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Links Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="/">Início</a></li>
+                            <li><a href="/#about">Quem Somos</a></li>
+                            <li><a href="/#services">Soluções</a></li>
+                            <li><a href="/#testimonials">Depoimentos</a></li>
+                            <li><a href="/#contact">Contato</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Soluções</h3>
+                        <ul class="footer-links">
+                            <li><a href="/#services">Garantia de Crédito</a></li>
+                            <li><a href="/#services">Consultoria Financeira</a></li>
+                            <li><a href="/#services">Capacitação Empresarial</a></li>
+                            <li><a href="#">Eventos</a></li>
+                            <li><a href="#">Parcerias</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Atendimento</h3>
+                        <ul class="footer-links">
+                            <li><a href="http://177.107.125.154:3378/" target="_blank">Área do Colaborador</a></li>
+                            <li><a href="#">Área do Associado</a></li>
+                            <li><a href="/faq.html">FAQ</a></li>
+                            <li><a href="/documentos.html">Documentos</a></li>
+                            <li><a href="/politica-de-privacidade.html" class="active">Política de Privacidade</a></li>
+                            <li><a href="/termos-de-uso.html">Termos de Uso</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; {{ currentYear }} Garanticoop - Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Whatsapp Button -->
+        <a href="#" class="whatsapp-btn" @click.prevent="openWhatsapp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para atualizar o ano atual no footer
+            function updateFooterYear() {
+                const currentYear = new Date().getFullYear();
+                
+                // Procura por elementos que contenham o texto "{{ currentYear }}" e substitui
+                const footerTexts = document.querySelectorAll('.footer-bottom p');
+                footerTexts.forEach(element => {
+                    if (element.innerHTML.includes('{{ currentYear }}')) {
+                        element.innerHTML = element.innerHTML.replace('{{ currentYear }}', currentYear);
+                    }
+                });
+            }
+            
+            // Executa imediatamente
+            updateFooterYear();
+            
+            // Executa novamente após um breve atraso (caso o Vue não tenha terminado de renderizar)
+            setTimeout(updateFooterYear, 500);
+        });
+        
+        const { createApp, ref, computed } = Vue;
+        
+        createApp({
+            setup() {
+                // Mobile menu state
+                const isMobileMenuOpen = ref(false);
+                
+                // Current year for footer
+                const currentYear = computed(() => new Date().getFullYear());
+                
+                // Methods
+                const toggleMobileMenu = () => {
+                    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+                };
+                
+                const closeMobileMenu = () => {
+                    isMobileMenuOpen.value = false;
+                };
+                
+                // Abre o WhatsApp
+                const openWhatsapp = () => {
+                    window.open('https://wa.me/554532524435?text=Olá, tenho uma dúvida sobre a política de privacidade da Garanticoop. Poderia me ajudar?', '_blank');
+                };
+                
+                return {
+                    isMobileMenuOpen,
+                    currentYear,
+                    toggleMobileMenu,
+                    closeMobileMenu,
+                    openWhatsapp,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

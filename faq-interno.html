@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Conhecimento Interna - Garanticoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Estilos para a Base de Conhecimento Interna */
+        :root {
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --primary-light: #a5e8ad;
+            --dark-light: #1a1a66;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+        }
+        
+        .knowledge-base {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--dark);
+            color: var(--white);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-logo img {
+            height: 30px;
+        }
+        
+        .sidebar-logo h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .close-sidebar {
+            display: none;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .sidebar-user {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark);
+        }
+        
+        .user-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .user-info span {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+        
+        .nav-section {
+            margin-bottom: 20px;
+        }
+        
+        .nav-section-title {
+            padding: 10px 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            color: var(--white);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+        }
+        
+        .nav-link i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease;
+        }
+        
+        .top-header {
+            height: var(--header-height);
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+        
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-toggle:hover {
+            background-color: var(--light);
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--lighter-gray);
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(140, 225, 150, 0.2);
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-action {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .header-action:hover {
+            background-color: var(--light);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background-color: #ff5252;
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .content-area {
+            padding: 30px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .page-description {
+            color: var(--gray);
+            font-size: 16px;
+        }
+        
+        .page-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--lighter-gray);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--accent) 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-icon {
+            font-size: 48px;
+            opacity: 0.2;
+            position: absolute;
+            right: 20px;
+            bottom: -10px;
+        }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .category-count {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .category-content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        
+        .category-description {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .faq-list {
+            margin-top: 30px;
+        }
+        
+        .faq-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .faq-question:hover {
+            background-color: var(--light);
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--primary);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        .faq-tags {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .faq-tag {
+            padding: 2px 8px;
+            background-color: var(--light);
+            border-radius: 50px;
+            font-size: 12px;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-top: 0px solid var(--lighter-gray);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 2000px;
+            border-top: 1px solid var(--lighter-gray);
+        }
+        
+        .answer-content {
+            padding: 20px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        .answer-content img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        
+        .answer-content p {
+            margin-bottom: 15px;
+        }
+        
+        .answer-content ul, .answer-content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        .answer-content li {
+            margin-bottom: 5px;
+        }
+        
+        .answer-content code {
+            background-color: var(--light);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .answer-content pre {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+        
+        .answer-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+            font-style: italic;
+            margin: 15px 0;
+            color: var(--dark);
+        }
+        
+        .answer-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--lighter-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gray);
+            font-size: 12px;
+        }
+        
+        .answer-footer a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .answer-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .answer-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .answer-action:hover {
+            color: var(--primary);
+        }
+        
+        .create-faq-form {
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--lighter-gray);
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(140, 225, 150, 0.2);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        
+        textarea.form-control {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        .form-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid var(--lighter-gray);
+            border-radius: 5px;
+            min-height: 50px;
+        }
+        
+        .tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background-color: var(--primary-light);
+            border-radius: 50px;
+            font-size: 14px;
+        }
+        
+        .tag-close {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        
+        .tag-input input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 5px 0;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--lighter-gray);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(140, 225, 150, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .upload-hint {
+            font-size: 12px;
+            color: var(--gray);
+        }
+        
+        .upload-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .preview-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .preview-image {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 10px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid var(--lighter-gray);
+            margin-bottom: 20px;
+        }
+        
+        .tab-button {
+            padding: 12px 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+        }
+        
+        .tab-button.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .markdown-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid var(--lighter-gray);
+            border-radius: 5px 5px 0 0;
+            background-color: #f9f9f9;
+        }
+        
+        .markdown-tool {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .markdown-tool:hover {
+            background-color: var(--lighter-gray);
+        }
+        
+        .markdown-preview {
+            padding: 20px;
+            border: 1px solid var(--lighter-gray);
+            border-radius: 5px;
+            min-height: 200px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-sm {
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+        
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .breadcrumb-separator {
+            margin: 0 10px;
+            font-size: 12px;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        /* Responsivo */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 10px 0 20px rgba(0, 0, 0, 0.2);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle, .close-sidebar {
+                display: flex;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-header {
+                padding: 0 15px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+            
+            .search-bar {
+                max-width: 180px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .create-faq-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="knowledge-base">
+        <!-- Sidebar -->
+        <aside class="sidebar" :class="{ active: isSidebarOpen }">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="src/public/img/logo.svg" alt="Garanticoop">
+                    <h2>Knowledge Base</h2>
+                </div>
+                <div class="close-sidebar" @click="toggleSidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    {{ currentUser.initials }}
+                </div>
+                <div class="user-info">
+                    <h3>{{ currentUser.name }}</h3>
+                    <span>{{ currentUser.role }}</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Menu Principal</div>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'dashboard' }" @click.prevent="changeView('dashboard')">
+                                <i class="fas fa-home"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'faqs' || currentView === 'category' }" @click.prevent="changeView('faqs')">
+                                <i class="fas fa-question-circle"></i>
+                                <span>Base de Conhecimento</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'my-contributions' }" @click.prevent="changeView('my-contributions')">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Minhas Contribuições</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'favorites' }" @click.prevent="changeView('favorites')">
+                                <i class="fas fa-star"></i>
+                                <span>Favoritos</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Gerenciamento</div>
+                    <ul class="nav-menu">
+                        <li class="nav-item" v-if="currentUser.isAdmin">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'manage-categories' }" @click.prevent="changeView('manage-categories')">
+                                <i class="fas fa-folder"></i>
+                                <span>Categorias</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" v-if="currentUser.isAdmin">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'manage-users' }" @click.prevent="changeView('manage-users')">
+                                <i class="fas fa-users-cog"></i>
+                                <span>Usuários</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" :class="{ active: currentView === 'create-faq' }" @click.prevent="changeView('create-faq')">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Criar FAQ</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="menu-toggle" @click="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar na base de conhecimento..." v-model="searchQuery" @keyup.enter="searchFAQs">
+                </div>
+                
+                <div class="header-actions">
+                    <div class="header-action">
+                        <i class="fas fa-bell"></i>
+                        <div class="notification-badge" v-if="notifications.length">{{ notifications.length }}</div>
+                    </div>
+                    <div class="header-action">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="header-action" @click="logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard View -->
+                <div v-if="currentView === 'dashboard'">
+                    <div class="page-header">
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-description">Bem-vindo à Base de Conhecimento Interna da Garanticoop</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Artigos Recentes</h2>
+                            <div class="card-actions">
+                                <button class="btn btn-sm btn-outline">Ver Todos</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="faq-list">
+                                <div class="faq-item" v-for="(faq, index) in recentFaqs" :key="index" :class="{ active: faq.isOpen }">
+                                    <div class="faq-question" @click="toggleFaq(faq)">
+                                        <div>
+                                            <div>{{ faq.question }}</div>
+                                            <div class="faq-meta">
+                                                <span>{{ faq.category }}</span>
+                                                <span>•</span>
+                                                <span>Atualizado: {{ faq.updatedAt }}</span>
+                                                <div class="faq-tags">
+                                                    <div class="faq-tag" v-for="(tag, tagIndex) in faq.tags" :key="tagIndex">{{ tag }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="answer-content" v-html="faq.formattedAnswer"></div>
+                                        <div class="answer-footer">
+                                            <div>
+                                                Criado por <a href="#">{{ faq.author }}</a> • {{ faq.createdAt }}
+                                            </div>
+                                            <div class="answer-actions">
+                                                <div class="answer-action">
+                                                    <i class="far fa-thumbs-up"></i>
+                                                    <span>{{ faq.likes }}</span>
+                                                </div>
+                                                <div class="answer-action">
+                                                    <i class="far fa-bookmark"></i>
+                                                </div>
+                                                <div class="answer-action">
+                                                    <i class="fas fa-share-alt"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="page-header">
+                        <h2 class="page-title">Categorias</h2>
+                    </div>
+                    
+                    <div class="categories-grid">
+                        <div class="category-card" v-for="(category, index) in categories" :key="index" @click="viewCategory(category)">
+                            <div class="category-header">
+                                <div class="category-title">{{ category.name }}</div>
+                                <div class="category-count">{{ category.count }} artigos</div>
+                                <div class="category-icon">
+                                    <i :class="category.icon"></i>
+                                </div>
+                            </div>
+                            <div class="category-content">
+                                <div class="category-description">{{ category.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQs View -->
+                <div v-if="currentView === 'faqs'">
+                    <div class="page-header">
+                        <h1 class="page-title">Base de Conhecimento</h1>
+                        <p class="page-description">Explore a documentação interna da Garanticoop</p>
+                        <div class="page-actions">
+                            <button class="btn btn-primary btn-icon" @click="changeView('create-faq')">
+                                <i class="fas fa-plus"></i>
+                                <span>Criar Novo Artigo</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="categories-grid">
+                        <div class="category-card" v-for="(category, index) in categories" :key="index" @click="viewCategory(category)">
+                            <div class="category-header">
+                                <div class="category-title">{{ category.name }}</div>
+                                <div class="category-count">{{ category.count }} artigos</div>
+                                <div class="category-icon">
+                                    <i :class="category.icon"></i>
+                                </div>
+                            </div>
+                            <div class="category-content">
+                                <div class="category-description">{{ category.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Category View -->
+                <div v-if="currentView === 'category' && selectedCategory">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb-item">
+                            <a href="#" @click.prevent="changeView('faqs')">Base de Conhecimento</a>
+                        </div>
+                        <div class="breadcrumb-separator">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="breadcrumb-item active">
+                            {{ selectedCategory.name }}
+                        </div>
+                    </div>
+                    
+                    <div class="page-header">
+                        <h1 class="page-title">{{ selectedCategory.name }}</h1>
+                        <p class="page-description">{{ selectedCategory.description }}</p>
+                        <div class="page-actions">
+                            <button class="btn btn-primary btn-icon" @click="createFaqInCategory(selectedCategory)">
+                                <i class="fas fa-plus"></i>
+                                <span>Adicionar Artigo</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-list">
+                        <div class="faq-item" v-for="(faq, index) in categoryFaqs" :key="index" :class="{ active: faq.isOpen }">
+                            <div class="faq-question" @click="toggleFaq(faq)">
+                                <div>
+                                    <div>{{ faq.question }}</div>
+                                    <div class="faq-meta">
+                                        <span>Atualizado: {{ faq.updatedAt }}</span>
+                                        <div class="faq-tags">
+                                            <div class="faq-tag" v-for="(tag, tagIndex) in faq.tags" :key="tagIndex">{{ tag }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="answer-content" v-html="faq.formattedAnswer"></div>
+                                <div class="answer-footer">
+                                    <div>
+                                        Criado por <a href="#">{{ faq.author }}</a> • {{ faq.createdAt }}
+                                    </div>
+                                    <div class="answer-actions">
+                                        <div class="answer-action">
+                                            <i class="far fa-thumbs-up"></i>
+                                            <span>{{ faq.likes }}</span>
+                                        </div>
+                                        <div class="answer-action" @click.stop="toggleFavorite(faq)">
+                                            <i :class="faq.isFavorite ? 'fas fa-bookmark' : 'far fa-bookmark'"></i>
+                                        </div>
+                                        <div class="answer-action">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Create FAQ View -->
+                <div v-if="currentView === 'create-faq'">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb-item">
+                            <a href="#" @click.prevent="changeView('faqs')">Base de Conhecimento</a>
+                        </div>
+                        <div class="breadcrumb-separator">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="breadcrumb-item active">
+                            Criar Novo Artigo
+                        </div>
+                    </div>
+                    
+                    <div class="page-header">
+                        <h1 class="page-title">Criar Novo Artigo</h1>
+                        <p class="page-description">Compartilhe seu conhecimento com a equipe</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="create-faq-form">
+                                <div class="form-group">
+                                    <label class="form-label">Título da Pergunta</label>
+                                    <input type="text" class="form-control" v-model="newFaq.question" placeholder="Ex: Como configurar acesso à API de integração?">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Categoria</label>
+                                    <select class="form-control" v-model="newFaq.categoryId">
+                                        <option :value="null" disabled>Selecione uma categoria</option>
+                                        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Tags</label>
+                                    <div class="tag-input">
+                                        <div class="tag" v-for="(tag, index) in newFaq.tags" :key="index">
+                                            <span>{{ tag }}</span>
+                                            <div class="tag-close" @click="removeTag(index)">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" 
+                                               placeholder="Digite uma tag e pressione Enter" 
+                                               v-model="tagInput" 
+                                               @keydown.enter.prevent="addTag">
+                                    </div>
+                                    <span class="form-text">Adicione tags para facilitar a busca (máximo 5 tags)</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Conteúdo</label>
+                                    <div class="tab-buttons">
+                                        <button class="tab-button" :class="{ active: activeTab === 'write' }" @click="activeTab = 'write'">Escrever</button>
+                                        <button class="tab-button" :class="{ active: activeTab === 'preview' }" @click="activeTab = 'preview'">Visualizar</button>
+                                    </div>
+                                    
+                                    <div class="tab-content" :class="{ active: activeTab === 'write' }">
+                                        <div class="markdown-tools">
+                                            <div class="markdown-tool" @click="applyMarkdown('bold')">
+                                                <i class="fas fa-bold"></i>
+                                            </div>
+                                            <div class="markdown-tool" @click="applyMarkdown('italic')">
+                                                <i class="fas fa-italic"></i>
+                                            </div>
+                                            <div class="markdown-tool" @click="applyMarkdown('heading')">
+                                                <i class="fas fa-heading"></i>
+                                            </div>
+                                            <div class="markdown-tool" @click="applyMarkdown('link')">
+                                                <i class="fas fa-link"></i>
+                                            </div>
+                                            <div class="markdown-tool" @click="applyMarkdown('list')">
+                                                <i class="fas fa-list-ul"></i>
+                                            </div>
+                                            <div class="markdown-tool" @click="applyMarkdown('code')">
+                                                <i class="fas fa-code"></i>
+                                            </div>
+                                            <div class="markdown-tool" @click="applyMarkdown('quote')">
+                                                <i class="fas fa-quote-right"></i>
+                                            </div>
+                                        </div>
+                                        <textarea class="form-control" v-model="newFaq.answer" placeholder="Escreva aqui o conteúdo detalhado..."></textarea>
+                                        <span class="form-text">Você pode usar formatação Markdown ou HTML</span>
+                                    </div>
+                                    
+                                    <div class="tab-content" :class="{ active: activeTab === 'preview' }">
+                                        <div class="markdown-preview" v-html="markdownPreview"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Anexos</label>
+                                    <div class="upload-area" @click="triggerFileInput">
+                                        <div class="upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <div class="upload-text">Arraste arquivos ou clique para fazer upload</div>
+                                        <div class="upload-hint">Formatos aceitos: JPG, PNG, PDF, DOCX (máx. 5MB)</div>
+                                        <input type="file" class="upload-input" ref="fileInput" @change="handleFileUpload" multiple>
+                                    </div>
+                                    
+                                    <div class="preview-images" v-if="newFaq.attachments.length">
+                                        <div class="preview-image" v-for="(attachment, index) in newFaq.attachments" :key="index">
+                                            <img :src="attachment.preview" alt="Preview">
+                                            <div class="preview-remove" @click.stop="removeAttachment(index)">
+                                                <i class="fas fa-times"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button class="btn btn-outline" @click="cancelCreateFaq">Cancelar</button>
+                                    <button class="btn btn-primary" @click="saveFaq">Publicar Artigo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- My Contributions View -->
+                <div v-if="currentView === 'my-contributions'">
+                    <div class="page-header">
+                        <h1 class="page-title">Minhas Contribuições</h1>
+                        <p class="page-description">Artigos que você criou ou editou</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Meus Artigos</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="faq-list">
+                                <div class="faq-item" v-for="(faq, index) in myFaqs" :key="index" :class="{ active: faq.isOpen }">
+                                    <div class="faq-question" @click="toggleFaq(faq)">
+                                        <div>
+                                            <div>{{ faq.question }}</div>
+                                            <div class="faq-meta">
+                                                <span>{{ faq.category }}</span>
+                                                <span>•</span>
+                                                <span>Atualizado: {{ faq.updatedAt }}</span>
+                                                <div class="faq-tags">
+                                                    <div class="faq-tag" v-for="(tag, tagIndex) in faq.tags" :key="tagIndex">{{ tag }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="answer-content" v-html="faq.formattedAnswer"></div>
+                                        <div class="answer-footer">
+                                            <div>
+                                                Visualizações: {{ faq.views }} • Likes: {{ faq.likes }}
+                                            </div>
+                                            <div class="answer-actions">
+                                                <div class="answer-action">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    <span>Editar</span>
+                                                </div>
+                                                <div class="answer-action">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                    <span>Excluir</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Favorites View -->
+                <div v-if="currentView === 'favorites'">
+                    <div class="page-header">
+                        <h1 class="page-title">Meus Favoritos</h1>
+                        <p class="page-description">Artigos que você marcou como favoritos</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="faq-list">
+                                <div class="faq-item" v-for="(faq, index) in favoriteFaqs" :key="index" :class="{ active: faq.isOpen }">
+                                    <div class="faq-question" @click="toggleFaq(faq)">
+                                        <div>
+                                            <div>{{ faq.question }}</div>
+                                            <div class="faq-meta">
+                                                <span>{{ faq.category }}</span>
+                                                <span>•</span>
+                                                <span>Atualizado: {{ faq.updatedAt }}</span>
+                                                <div class="faq-tags">
+                                                    <div class="faq-tag" v-for="(tag, tagIndex) in faq.tags" :key="tagIndex">{{ tag }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="faq-answer">
+                                        <div class="answer-content" v-html="faq.formattedAnswer"></div>
+                                        <div class="answer-footer">
+                                            <div>
+                                                Criado por <a href="#">{{ faq.author }}</a> • {{ faq.createdAt }}
+                                            </div>
+                                            <div class="answer-actions">
+                                                <div class="answer-action" @click.stop="toggleFavorite(faq)">
+                                                    <i class="fas fa-bookmark"></i>
+                                                    <span>Remover dos Favoritos</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const { createApp, ref, computed, watch } = Vue;
+            
+            createApp({
+                setup() {
+                    // Estado da aplicação
+                    const isSidebarOpen = ref(false);
+                    const currentView = ref('dashboard');
+                    const searchQuery = ref('');
+                    const activeTab = ref('write');
+                    const selectedCategory = ref(null);
+                    const tagInput = ref('');
+                    
+                    // Dados do usuário atual
+                    const currentUser = ref({
+                        id: 1,
+                        name: 'Carlos Mendes',
+                        initials: 'CM',
+                        role: 'Coordenador Financeiro',
+                        email: 'carlos.mendes@garanticoop.com.br',
+                        isAdmin: true
+                    });
+                    
+                    // Dados para novo FAQ
+                    const newFaq = ref({
+                        question: '',
+                        answer: '',
+                        categoryId: null,
+                        tags: [],
+                        attachments: []
+                    });
+                    
+                    // Notificações
+                    const notifications = ref([
+                        { id: 1, message: 'Novo artigo adicionado em Processos Financeiros', isRead: false },
+                        { id: 2, message: 'Ana Oliveira atualizou o tutorial de relatórios', isRead: false }
+                    ]);
+                    
+                    // Categorias
+                    const categories = ref([
+                        { 
+                            id: 1, 
+                            name: 'Processos Financeiros', 
+                            count: 24,
+                            icon: 'fas fa-money-bill-wave',
+                            description: 'Procedimentos para operações financeiras, análise de crédito e garantias'
+                        },
+                        { 
+                            id: 2, 
+                            name: 'Sistemas e Ferramentas', 
+                            count: 32,
+                            icon: 'fas fa-laptop-code',
+                            description: 'Tutoriais e guias para uso dos sistemas internos e ferramentas de trabalho' 
+                        },
+                        { 
+                            id: 3, 
+                            name: 'Recursos Humanos', 
+                            count: 18,
+                            icon: 'fas fa-users',
+                            description: 'Políticas de RH, benefícios, férias e procedimentos administrativos' 
+                        },
+                        { 
+                            id: 4, 
+                            name: 'Atendimento ao Cliente', 
+                            count: 27,
+                            icon: 'fas fa-headset',
+                            description: 'Protocolos de atendimento, respostas a perguntas frequentes e soluções para clientes' 
+                        },
+                        { 
+                            id: 5, 
+                            name: 'Marketing e Comunicação', 
+                            count: 15,
+                            icon: 'fas fa-bullhorn',
+                            description: 'Diretrizes de marca, materiais de comunicação e redes sociais' 
+                        },
+                        { 
+                            id: 6, 
+                            name: 'Compliance e Regulamentação', 
+                            count: 21,
+                            icon: 'fas fa-shield-alt',
+                            description: 'Políticas de conformidade, LGPD e normas regulatórias aplicáveis' 
+                        }
+                    ]);
+                    
+                    // Dados de exemplo para FAQs
+                    const faqs = ref([
+                        {
+                            id: 1,
+                            question: 'Como realizar a análise de crédito para garantias acima de R$ 100.000?',
+                            answer: `# Processo de Análise para Garantias de Alto Valor
+                            
+Para garantias acima de R$ 100.000, o processo de análise requer etapas adicionais de verificação e aprovação. Siga este passo a passo:
+
+## Documentação Necessária
+
+1. Demonstrações financeiras auditadas dos últimos 3 anos
+2. Projeção de fluxo de caixa para o período do financiamento
+3. Relatório detalhado de bens e garantias
+4. Certidões negativas atualizadas
+5. Histórico de operações anteriores
+
+## Etapas do Processo
+
+1. **Pré-análise**
+   - Verificação da documentação completa
+   - Consulta ao SCR e bureaus de crédito
+   - Validação do limite disponível no sistema
+
+2. **Análise técnica**
+   - Avaliação dos índices financeiros
+   - Análise da capacidade de pagamento
+   - Verificação de garantias oferecidas
+
+3. **Comitê de Crédito**
+   - Apresentação do caso ao comitê
+   - Deliberação colegiada
+   - Registro em ata da decisão
+
+![Fluxograma do processo](https://exemplo.com/fluxograma.png)
+
+> **Atenção**: Garantias acima de R$ 250.000 precisam também de aprovação da Diretoria Executiva.
+
+### Dicas importantes
+
+* Sempre verificar a atualização do SERASA antes de iniciar a análise
+* Documentar todas as etapas no sistema CRM
+* Em caso de dúvidas, consultar o manual completo na intranet
+
+Para mais informações, entre em contato com o Departamento de Risco pelo e-mail risco@garanticoop.com.br`,
+                            category: 'Processos Financeiros',
+                            tags: ['análise de crédito', 'alto valor', 'garantias'],
+                            author: 'Ana Oliveira',
+                            createdAt: '15/02/2025',
+                            updatedAt: '22/02/2025',
+                            likes: 12,
+                            views: 87,
+                            isOpen: false,
+                            isFavorite: true
+                        },
+                        {
+                            id: 2,
+                            question: 'Como configurar o acesso remoto VPN para trabalho em home office?',
+                            answer: `# Configuração de Acesso VPN para Home Office
+
+Este guia explica como configurar o acesso remoto VPN para trabalhar de casa com segurança.
+
+## Requisitos
+
+- Computador com Windows 10 ou superior / MacOS 10.14+
+- Software FortiClient VPN (versão 7.0 ou superior)
+- Credenciais de acesso fornecidas pelo TI
+
+## Passos para Instalação
+
+1. Baixe o FortiClient VPN do portal de colaboradores: [link interno](http://portal.garanticoop.com.br/downloads)
+
+2. Execute o instalador e siga as instruções na tela:
+   - Aceite os termos de uso
+   - Selecione "Instalação Padrão"
+   - Aguarde a conclusão
+
+3. Após a instalação, abra o FortiClient e configure:
+   - Nome da conexão: "Garanticoop VPN"
+   - Endereço: vpn.garanticoop.com.br
+   - Porta: 443
+   - Marque a opção "Conectar usando SSL VPN"
+
+## Conectando-se
+
+1. Abra o FortiClient VPN
+2. Selecione a conexão "Garanticoop VPN"
+3. Digite seu usuário de rede e senha
+4. Clique em "Conectar"
+
+![Tela de login do FortiClient](https://exemplo.com/vpn-login.jpg)
+
+Se a conexão for bem-sucedida, você verá o status "Conectado" e terá acesso aos sistemas internos.
+
+## Solução de Problemas
+
+| Problema | Solução |
+|----------|---------|
+| Falha na conexão | Verifique sua conexão com a internet |
+| Erro de autenticação | Confirme seu usuário e senha, ou solicite reset |
+| VPN conecta mas sem acesso | Reinicie o computador e tente novamente |
+
+Para problemas persistentes, entre em contato com o suporte técnico:
+- E-mail: suporte@garanticoop.com.br
+- Telefone: (45) 3252-4435 (ramal 105)`,
+                            category: 'Sistemas e Ferramentas',
+                            tags: ['VPN', 'acesso remoto', 'home office', 'TI'],
+                            author: 'Ricardo Santos',
+                            createdAt: '10/01/2025',
+                            updatedAt: '05/03/2025',
+                            likes: 28,
+                            views: 145,
+                            isOpen: false,
+                            isFavorite: false
+                        },
+                        {
+                            id: 3,
+                            question: 'Quais são as etapas do processo de onboarding de novos colaboradores?',
+                            answer: `# Processo de Onboarding de Novos Colaboradores
+
+Este documento detalha as etapas do processo de integração de novos colaboradores à Garanticoop.
+
+## Antes do Primeiro Dia
+
+### Responsabilidades do RH:
+- Preparar documentação de admissão
+- Solicitar acesso aos sistemas necessários
+- Configurar e-mail corporativo
+- Preparar estação de trabalho
+- Agendar treinamentos iniciais
+
+### Responsabilidades do Gestor:
+- Definir plano de atividades para primeira semana
+- Designar um mentor para acompanhamento
+- Comunicar a equipe sobre o novo integrante
+
+## Primeiro Dia
+
+1. **Recepção e Boas-vindas (RH - 9h)**
+   - Apresentação da empresa e cultura organizacional
+   - Tour pelas instalações
+   - Entrega de crachá e materiais
+
+2. **Configurações de TI (Suporte Técnico - 10h30)**
+   - Configuração de computador e periféricos
+   - Acesso à rede e sistemas
+   - Explicação sobre suporte técnico
+
+3. **Almoço com a Equipe (12h)**
+   - Integração com colegas de trabalho
+
+4. **Encontro com Gestor (14h)**
+   - Apresentação detalhada da área
+   - Explicação das funções e responsabilidades
+   - Plano de desenvolvimento inicial
+
+## Primeira Semana
+
+### Dia 2-3:
+- Treinamentos básicos sobre produtos e serviços
+- Conhecimento dos processos operacionais
+- Apresentação às equipes de interface
+
+### Dia 4-5:
+- Acompanhamento das atividades com mentor
+- Treinamentos específicos da função
+- Primeira reunião de feedback com gestor
+
+## Acompanhamento Contínuo
+
+- **30 dias**: Reunião de feedback com RH e gestor
+- **60 dias**: Avaliação parcial de desempenho
+- **90 dias**: Avaliação de período de experiência
+
+## Checklist de Documentos
+
+- [ ] Cópia de documentos pessoais (RG, CPF)
+- [ ] Comprovante de residência
+- [ ] Dados bancários para pagamento
+- [ ] Termo de confidencialidade assinado
+- [ ] Declaração de beneficiários
+
+![Fluxo de Onboarding](https://exemplo.com/onboarding.png)
+
+> **Importante**: O gestor deve acompanhar de perto o processo e reportar ao RH qualquer necessidade de ajuste no programa de integração.
+
+Para mais informações, consulte o Manual Completo de Recursos Humanos disponível na intranet.`,
+                            category: 'Recursos Humanos',
+                            tags: ['onboarding', 'integração', 'RH', 'contratação'],
+                            author: 'Juliana Martins',
+                            createdAt: '05/12/2024',
+                            updatedAt: '18/01/2025',
+                            likes: 15,
+                            views: 103,
+                            isOpen: false,
+                            isFavorite: false
+                        }
+                    ]);
+                    
+                    // Computados
+                    const recentFaqs = computed(() => {
+                        return faqs.value.slice(0, 3);
+                    });
+                    
+                    const categoryFaqs = computed(() => {
+                        if (!selectedCategory.value) return [];
+                        return faqs.value.filter(faq => faq.category === selectedCategory.value.name);
+                    });
+                    
+                    const myFaqs = computed(() => {
+                        return faqs.value.filter(faq => faq.author === currentUser.value.name);
+                    });
+                    
+                    const favoriteFaqs = computed(() => {
+                        return faqs.value.filter(faq => faq.isFavorite);
+                    });
+                    
+                    const markdownPreview = computed(() => {
+                        if (!newFaq.value.answer) return '<p class="text-muted">Prévia do conteúdo aparecerá aqui...</p>';
+                        return marked.parse(newFaq.value.answer);
+                    });
+                    
+                    // Formatar o conteúdo da resposta para exibição
+                    watch(faqs, () => {
+                        faqs.value.forEach(faq => {
+                            faq.formattedAnswer = marked.parse(faq.answer);
+                        });
+                    }, { immediate: true });
+                    
+                    // Métodos
+                    const toggleSidebar = () => {
+                        isSidebarOpen.value = !isSidebarOpen.value;
+                    };
+                    
+                    const changeView = (view) => {
+                        currentView.value = view;
+                        if (view !== 'category') {
+                            selectedCategory.value = null;
+                        }
+                        if (isSidebarOpen.value) {
+                            isSidebarOpen.value = false;
+                        }
+                    };
+                    
+                    const viewCategory = (category) => {
+                        selectedCategory.value = category;
+                        currentView.value = 'category';
+                    };
+                    
+                    const toggleFaq = (faq) => {
+                        faq.isOpen = !faq.isOpen;
+                    };
+                    
+                    const searchFAQs = () => {
+                        // Implementação de pesquisa
+                        console.log('Pesquisando por:', searchQuery.value);
+                        // Em uma implementação real, aqui teríamos a lógica para filtrar os FAQs com base na query
+                    };
+                    
+                    const toggleFavorite = (faq) => {
+                        faq.isFavorite = !faq.isFavorite;
+                    };
+                    
+                    const triggerFileInput = () => {
+                        if (this.$refs && this.$refs.fileInput) {
+                            this.$refs.fileInput.click();
+                        }
+                    };
+                    
+                    const handleFileUpload = (event) => {
+                        const files = event.target.files;
+                        
+                        if (!files || !files.length) return;
+                        
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i];
+                            
+                            // Verificar tipo e tamanho
+                            const validTypes = ['image/jpeg', 'image/png', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+                            const maxSize = 5 * 1024 * 1024; // 5MB
+                            
+                            if (!validTypes.includes(file.type)) {
+                                alert('Formato de arquivo não suportado. Use JPG, PNG, PDF ou DOCX.');
+                                continue;
+                            }
+                            
+                            if (file.size > maxSize) {
+                                alert('Arquivo muito grande. O limite é 5MB.');
+                                continue;
+                            }
+                            
+                            // Criar prévia (para imagens)
+                            let preview = 'src/public/img/document-icon.png';
+                            
+                            if (file.type.startsWith('image/')) {
+                                preview = URL.createObjectURL(file);
+                            } else if (file.type.includes('pdf')) {
+                                preview = 'src/public/img/pdf-icon.png';
+                            } else if (file.type.includes('word')) {
+                                preview = 'src/public/img/docx-icon.png';
+                            }
+                            
+                            newFaq.value.attachments.push({
+                                file: file,
+                                name: file.name,
+                                type: file.type,
+                                size: file.size,
+                                preview: preview
+                            });
+                        }
+                        
+                        // Limpar input
+                        event.target.value = null;
+                    };
+                    
+                    const removeAttachment = (index) => {
+                        if (newFaq.value.attachments[index].preview && newFaq.value.attachments[index].preview.startsWith('blob:')) {
+                            URL.revokeObjectURL(newFaq.value.attachments[index].preview);
+                        }
+                        newFaq.value.attachments.splice(index, 1);
+                    };
+                    
+                    const addTag = () => {
+                        const tag = tagInput.value.trim();
+                        if (!tag) return;
+                        
+                        if (newFaq.value.tags.length >= 5) {
+                            alert('Máximo de 5 tags permitido.');
+                            return;
+                        }
+                        
+                        if (!newFaq.value.tags.includes(tag)) {
+                            newFaq.value.tags.push(tag);
+                        }
+                        
+                        tagInput.value = '';
+                    };
+                    
+                    const removeTag = (index) => {
+                        newFaq.value.tags.splice(index, 1);
+                    };
+                    
+                    const applyMarkdown = (type) => {
+                        if (!newFaq.value.answer) newFaq.value.answer = '';
+                        
+                        const textarea = document.querySelector('textarea.form-control');
+                        if (!textarea) return;
+                        
+                        const start = textarea.selectionStart;
+                        const end = textarea.selectionEnd;
+                        const selectedText = newFaq.value.answer.substring(start, end);
+                        let replacement = '';
+                        
+                        switch (type) {
+                            case 'bold':
+                                replacement = `**${selectedText || 'texto em negrito'}**`;
+                                break;
+                            case 'italic':
+                                replacement = `*${selectedText || 'texto em itálico'}*`;
+                                break;
+                            case 'heading':
+                                replacement = `## ${selectedText || 'Título'}`;
+                                break;
+                            case 'link':
+                                replacement = `[${selectedText || 'texto do link'}](url)`;
+                                break;
+                            case 'list':
+                                replacement = `\n- ${selectedText || 'Item da lista'}\n- Outro item\n- Mais um item`;
+                                break;
+                            case 'code':
+                                replacement = '```\n' + (selectedText || 'seu código aqui') + '\n```';
+                                break;
+                            case 'quote':
+                                replacement = `> ${selectedText || 'texto da citação'}`;
+                                break;
+                        }
+                        
+                        newFaq.value.answer = 
+                            newFaq.value.answer.substring(0, start) + 
+                            replacement + 
+                            newFaq.value.answer.substring(end);
+                        
+                        // Reposiciona o cursor após a marcação inserida
+                        setTimeout(() => {
+                            const newPosition = start + replacement.length;
+                            textarea.focus();
+                            textarea.setSelectionRange(newPosition, newPosition);
+                        }, 0);
+                    };
+                    
+                    const createFaqInCategory = (category) => {
+                        newFaq.value.categoryId = category.id;
+                        changeView('create-faq');
+                    };
+                    
+                    const saveFaq = () => {
+                        // Validação
+                        if (!newFaq.value.question || !newFaq.value.answer || !newFaq.value.categoryId) {
+                            alert('Por favor, preencha todos os campos obrigatórios: Título, Categoria e Conteúdo.');
+                            return;
+                        }
+                        
+                        // Aqui teríamos a lógica para enviar ao backend
+                        console.log('Salvando FAQ:', newFaq.value);
+                        
+                        // Em uma implementação real, aqui faríamos uma chamada API para salvar o FAQ
+                        // Por enquanto, vamos apenas simular adicionando ao array local
+                        
+                        const categoryName = categories.value.find(c => c.id === newFaq.value.categoryId).name;
+                        
+                        const newFaqObj = {
+                            id: faqs.value.length + 1,
+                            question: newFaq.value.question,
+                            answer: newFaq.value.answer,
+                            formattedAnswer: marked.parse(newFaq.value.answer),
+                            category: categoryName,
+                            tags: [...newFaq.value.tags],
+                            author: currentUser.value.name,
+                            createdAt: new Date().toLocaleDateString('pt-BR'),
+                            updatedAt: new Date().toLocaleDateString('pt-BR'),
+                            likes: 0,
+                            views: 0,
+                            isOpen: false,
+                            isFavorite: false
+                        };
+                        
+                        faqs.value.unshift(newFaqObj);
+                        
+                        // Incrementa contador na categoria
+                        const categoryIndex = categories.value.findIndex(c => c.id === newFaq.value.categoryId);
+                        if (categoryIndex !== -1) {
+                            categories.value[categoryIndex].count++;
+                        }
+                        
+                        // Limpa o formulário
+                        resetNewFaq();
+                        
+                        // Redireciona para a lista de FAQs
+                        changeView('faqs');
+                        
+                        alert('FAQ criado com sucesso!');
+                    };
+                    
+                    const cancelCreateFaq = () => {
+                        if (confirm('Descartar este artigo? As alterações não salvas serão perdidas.')) {
+                            resetNewFaq();
+                            changeView('faqs');
+                        }
+                    };
+                    
+                    const resetNewFaq = () => {
+                        newFaq.value = {
+                            question: '',
+                            answer: '',
+                            categoryId: null,
+                            tags: [],
+                            attachments: []
+                        };
+                        
+                        // Limpar quaisquer prévias de arquivos
+                        newFaq.value.attachments.forEach(attachment => {
+                            if (attachment.preview && attachment.preview.startsWith('blob:')) {
+                                URL.revokeObjectURL(attachment.preview);
+                            }
+                        });
+                        
+                        activeTab.value = 'write';
+                    };
+                    
+                    const logout = () => {
+                        if (confirm('Deseja realmente sair?')) {
+                            // Em uma implementação real, aqui teríamos a lógica de logout
+                            location.href = '/';
+                        }
+                    };
+                    
+                    return {
+                        // Estado
+                        isSidebarOpen,
+                        currentView,
+                        searchQuery,
+                        activeTab,
+                        selectedCategory,
+                        tagInput,
+                        
+                        // Dados
+                        currentUser,
+                        newFaq,
+                        notifications,
+                        categories,
+                        faqs,
+                        recentFaqs,
+                        categoryFaqs,
+                        myFaqs,
+                        favoriteFaqs,
+                        markdownPreview,
+                        
+                        // Métodos
+                        toggleSidebar,
+                        changeView,
+                        viewCategory,
+                        toggleFaq,
+                        searchFAQs,
+                        toggleFavorite,
+                        triggerFileInput,
+                        handleFileUpload,
+                        removeAttachment,
+                        addTag,
+                        removeTag,
+                        applyMarkdown,
+                        createFaqInCategory,
+                        saveFaq,
+                        cancelCreateFaq,
+                        logout
+                    };
+                }
+            }).mount('#app');
+        });
+    </script>
+</body>
+</html>

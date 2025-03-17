@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso - Garanticoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Estilos específicos para a página de Termos de Uso */
+        .terms-header {
+            background: linear-gradient(to right, var(--dark), var(--accent));
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .terms-header h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .terms-header p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .terms-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .terms-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .last-update {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .terms-content h2 {
+            font-size: 24px;
+            color: var(--dark);
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--lighter-gray);
+        }
+        
+        .terms-content h3 {
+            font-size: 20px;
+            color: var(--secondary);
+            margin: 25px 0 15px;
+        }
+        
+        .terms-content p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+            color: var(--gray);
+        }
+        
+        .terms-content ul, .terms-content ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .terms-content li {
+            margin-bottom: 10px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+        
+        .terms-content a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .terms-content a:hover {
+            color: var(--secondary);
+        }
+        
+        .table-of-contents {
+            background-color: rgba(70, 115, 245, 0.05);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .table-of-contents h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .table-of-contents ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .table-of-contents li {
+            margin-bottom: 8px;
+        }
+        
+        .table-of-contents a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .table-of-contents a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .highlight-box {
+            background-color: rgba(140, 225, 150, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .terms-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container header-container">
+                <a href="/">
+                    <img src="src/public/img/logo.svg" alt="Garanticoop" class="logo-image"/>
+                </a>
+                
+                <nav class="nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="https://parceiro.gestaoar.shop/fenacon/garanticoop" class="nav-link">Certificado Digital
+                        <span class="tooltip-text">Adquira já!</span>
+                    </a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </nav>
+                
+                <div class="mobile-menu-btn" @click="toggleMobileMenu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="mobile-menu" :class="{ active: isMobileMenuOpen }">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/#about" class="nav-link">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </div>
+                
+                <div class="overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+            </div>
+        </header>
+        
+        <!-- Terms Header -->
+        <section class="terms-header">
+            <div class="container">
+                <h1>Termos de Uso</h1>
+                <p>Regras e condições para utilização dos serviços da Garanticoop</p>
+            </div>
+        </section>
+        
+        <!-- Terms Content Section -->
+        <section class="terms-section">
+            <div class="container">
+                <div class="terms-container">
+                    <p class="last-update">Última atualização: 10 de março de 2025</p>
+                    
+                    <div class="table-of-contents">
+                        <h3>Sumário</h3>
+                        <ul>
+                            <li><a href="#introducao">1. Introdução</a></li>
+                            <li><a href="#definicoes">2. Definições</a></li>
+                            <li><a href="#aceitacao">3. Aceitação dos termos</a></li>
+                            <li><a href="#servicos">4. Serviços oferecidos</a></li>
+                            <li><a href="#cadastro">5. Cadastro e conta de usuário</a></li>
+                            <li><a href="#obrigacoes">6. Obrigações do usuário</a></li>
+                            <li><a href="#propriedade">7. Propriedade intelectual</a></li>
+                            <li><a href="#limitacao">8. Limitação de responsabilidade</a></li>
+                            <li><a href="#confidencialidade">9. Confidencialidade</a></li>
+                            <li><a href="#vigencia">10. Vigência e rescisão</a></li>
+                            <li><a href="#alteracoes">11. Alterações nos termos</a></li>
+                            <li><a href="#disposicoes">12. Disposições gerais</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="terms-content">
+                        <h2 id="introducao">1. Introdução</h2>
+                        <p>Estes Termos de Uso estabelecem as regras e condições para utilização dos serviços oferecidos pela Garanticoop, sociedade de garantia de crédito, com sede na Rua Theobaldo Dreier, 27, 2º Andar - Sala 04, Jardim Porto Alegre, Toledo - PR, CEP 85906-260, inscrita no CNPJ sob o nº 29.989.051/0001-70.</p>
+                        <p>Ao acessar nosso site, utilizar nossos serviços ou contratar nossas garantias, você concorda expressamente com estes termos e com nossa Política de Privacidade, que está incorporada a estes Termos de Uso por referência.</p>
+                        
+                        <h2 id="definicoes">2. Definições</h2>
+                        <p>Para os fins destes Termos de Uso, as seguintes definições se aplicam:</p>
+                        <ul>
+                            <li><strong>Garanticoop:</strong> refere-se à sociedade de garantia de crédito que oferece os serviços descritos nestes termos;</li>
+                            <li><strong>Usuário:</strong> pessoa física ou jurídica que acessa o site e/ou utiliza os serviços da Garanticoop;</li>
+                            <li><strong>Site:</strong> conjunto de páginas eletrônicas e ferramentas disponibilizadas na internet pela Garanticoop;</li>
+                            <li><strong>Serviços:</strong> conjunto de atividades oferecidas pela Garanticoop, incluindo, mas não se limitando a, concessão de garantias, consultoria financeira e capacitação empresarial;</li>
+                            <li><strong>Garantia:</strong> instrumento pelo qual a Garanticoop se torna avalista ou fiadora em operações de crédito dos usuários junto às instituições financeiras parceiras;</li>
+                            <li><strong>Conteúdo:</strong> todo e qualquer material disponibilizado no site, incluindo textos, imagens, vídeos, áudios, gráficos, logotipos, ícones, entre outros.</li>
+                        </ul>
+                        
+                        <h2 id="aceitacao">3. Aceitação dos termos</h2>
+                        <p>Ao acessar ou utilizar nossos serviços, você confirma que leu, entendeu e concorda com estes Termos de Uso em sua totalidade. Se você não concordar com qualquer parte destes termos, solicitamos que não utilize nossos serviços ou acesse nosso site.</p>
+                        <p>A aceitação destes termos é obrigatória para a utilização dos serviços oferecidos pela Garanticoop. Ao contratar nossos serviços, você estará sujeito a termos e condições adicionais específicos para cada tipo de serviço, que serão apresentados no momento da contratação.</p>
+                        
+                        <div class="highlight-box">
+                            <p>A utilização de nossos serviços por menores de 18 anos está condicionada à intervenção e consentimento expresso de seus pais ou responsáveis legais, que serão responsáveis por todos os atos praticados pelo menor.</p>
+                        </div>
+                        
+                        <h2 id="servicos">4. Serviços oferecidos</h2>
+                        <p>A Garanticoop oferece os seguintes serviços principais:</p>
+                        
+                        <h3>4.1. Concessão de garantias de crédito</h3>
+                        <p>Atuamos como avalistas em operações de crédito junto às instituições financeiras parceiras, possibilitando melhores condições de financiamento para micro e pequenas empresas.</p>
+                        
+                        <h3>4.2. Consultoria financeira</h3>
+                        <p>Oferecemos orientação especializada para ajudar empresas a identificar a melhor solução de crédito para suas necessidades.</p>
+                        
+                        <h3>4.3. Capacitação empresarial</h3>
+                        <p>Promovemos cursos, workshops e eventos para capacitar empreendedores em gestão financeira, planejamento estratégico e outros temas relevantes.</p>
+                        
+                        <p>A contratação dos serviços está sujeita à análise prévia e aprovação pela Garanticoop, de acordo com critérios técnicos, financeiros e de crédito estabelecidos em nossas políticas internas.</p>
+                        
+                        <h2 id="cadastro">5. Cadastro e conta de usuário</h2>
+                        <p>Para utilizar alguns de nossos serviços, pode ser necessário criar uma conta de usuário em nosso site. Ao se cadastrar, você se compromete a:</p>
+                        
+                        <ul>
+                            <li>Fornecer informações verdadeiras, precisas, atuais e completas;</li>
+                            <li>Manter e atualizar prontamente suas informações de cadastro;</li>
+                            <li>Não criar conta utilizando identidade falsa ou em nome de terceiros sem autorização;</li>
+                            <li>Responsabilizar-se pela segurança e confidencialidade de seu login e senha, não compartilhando-os com terceiros;</li>
+                            <li>Notificar imediatamente a Garanticoop sobre qualquer uso não autorizado de sua conta.</li>
+                        </ul>
+                        
+                        <p>A Garanticoop se reserva o direito de recusar, suspender ou cancelar o cadastro de qualquer usuário, a qualquer momento, caso sejam detectadas irregularidades, fornecimento de informações falsas ou violação destes Termos de Uso.</p>
+                        
+                        <h2 id="obrigacoes">6. Obrigações do usuário</h2>
+                        <p>Ao utilizar nossos serviços, você se compromete a:</p>
+                        
+                        <ul>
+                            <li>Utilizar os serviços de forma ética e em conformidade com a legislação aplicável;</li>
+                            <li>Não utilizar os serviços para fins ilegais, fraudulentos ou não autorizados;</li>
+                            <li>Fornecer documentos e informações verídicas para análise de crédito e concessão de garantias;</li>
+                            <li>Cumprir todas as obrigações assumidas nos contratos de garantia e nos financiamentos garantidos pela Garanticoop;</li>
+                            <li>Pagar pontualmente as taxas, comissões e demais valores devidos à Garanticoop;</li>
+                            <li>Não copiar, modificar, distribuir ou criar obras derivadas do conteúdo do site, exceto quando expressamente autorizado;</li>
+                            <li>Respeitar os direitos de propriedade intelectual da Garanticoop e de terceiros;</li>
+                            <li>Não utilizar técnicas que possam prejudicar o funcionamento do site ou tentar obter acesso não autorizado a áreas restritas.</li>
+                        </ul>
+                        
+                        <h2 id="propriedade">7. Propriedade intelectual</h2>
+                        <p>Todo o conteúdo disponibilizado em nosso site, incluindo, mas não se limitando a, textos, imagens, logotipos, marcas, layout, design, software e bancos de dados, é de propriedade exclusiva da Garanticoop ou licenciado a ela, e está protegido pelas leis de propriedade intelectual aplicáveis.</p>
+                        
+                        <p>É expressamente proibido, sem prévia autorização por escrito da Garanticoop:</p>
+                        <ul>
+                            <li>Copiar, reproduzir, modificar, republicar, transmitir ou distribuir qualquer material do site;</li>
+                            <li>Remover ou alterar quaisquer direitos autorais, marcas registradas ou outros avisos de propriedade;</li>
+                            <li>Utilizar o conteúdo do site para fins comerciais ou não autorizados;</li>
+                            <li>Criar obras derivadas baseadas no conteúdo do site.</li>
+                        </ul>
+                        
+                        <h2 id="limitacao">8. Limitação de responsabilidade</h2>
+                        <p>A Garanticoop se empenha para fornecer informações precisas e atualizadas em seu site, mas não garante a ausência de erros, omissões ou interrupções temporárias nos serviços. Dentro dos limites permitidos por lei:</p>
+                        
+                        <ul>
+                            <li>A Garanticoop não será responsável por danos indiretos, incidentais, especiais, punitivos ou consequentes resultantes do uso ou incapacidade de uso dos serviços;</li>
+                            <li>Não garantimos que o site estará disponível ininterruptamente ou livre de erros;</li>
+                            <li>Não nos responsabilizamos por conteúdos de sites de terceiros que possam ser acessados através de links em nosso site;</li>
+                            <li>A aprovação da garantia não assegura a aprovação do crédito pela instituição financeira, que possui critérios próprios de análise;</li>
+                            <li>Não nos responsabilizamos por decisões tomadas pelo usuário com base nas informações disponibilizadas em nosso site.</li>
+                        </ul>
+                        
+                        <div class="highlight-box">
+                            <p>Nossa responsabilidade está limitada às obrigações expressamente previstas nos contratos de garantia firmados com os usuários e na legislação aplicável.</p>
+                        </div>
+                        
+                        <h2 id="confidencialidade">9. Confidencialidade</h2>
+                        <p>A Garanticoop se compromete a manter a confidencialidade das informações fornecidas pelos usuários, utilizando-as apenas para os fins descritos em nossa Política de Privacidade e para a prestação dos serviços contratados.</p>
+                        
+                        <p>Da mesma forma, o usuário se compromete a manter a confidencialidade de informações estratégicas ou sigilosas da Garanticoop a que tenha acesso em decorrência da relação estabelecida.</p>
+                        
+                        <h2 id="vigencia">10. Vigência e rescisão</h2>
+                        <p>Estes Termos de Uso permanecerão vigentes enquanto você utilizar nossos serviços. A Garanticoop pode, a seu exclusivo critério, suspender ou encerrar seu acesso aos serviços, a qualquer momento e por qualquer motivo, especialmente em caso de violação destes termos.</p>
+                        
+                        <p>Os contratos específicos de garantia terão prazos de vigência próprios, definidos em seus respectivos instrumentos.</p>
+                        
+                        <h2 id="alteracoes">11. Alterações nos termos</h2>
+                        <p>A Garanticoop pode modificar estes Termos de Uso a qualquer momento, publicando uma versão atualizada em seu site. As alterações entrarão em vigor imediatamente após sua publicação. Recomendamos que você revise regularmente estes termos para estar ciente de eventuais mudanças.</p>
+                        
+                        <p>O uso continuado dos serviços após a publicação das alterações constitui aceitação dos novos termos. Caso não concorde com as alterações, você deve interromper o uso dos serviços.</p>
+                        
+                        <h2 id="disposicoes">12. Disposições gerais</h2>
+                        <ul>
+                            <li><strong>Lei aplicável:</strong> Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil;</li>
+                            <li><strong>Foro:</strong> Fica eleito o foro da comarca de Toledo, estado do Paraná, para dirimir quaisquer controvérsias decorrentes destes termos, com renúncia expressa a qualquer outro, por mais privilegiado que seja;</li>
+                            <li><strong>Independência das disposições:</strong> Se alguma disposição destes termos for considerada ilegal, nula ou inexequível, as demais disposições permanecerão válidas e em vigor;</li>
+                            <li><strong>Cessão:</strong> Você não poderá ceder ou transferir seus direitos ou obrigações sob estes termos sem o consentimento prévio e por escrito da Garanticoop;</li>
+                            <li><strong>Comunicações:</strong> Todas as comunicações relativas a estes termos devem ser enviadas para o endereço físico da Garanticoop ou para o e-mail: contato@garanticoop.com.br;</li>
+                            <li><strong>Acordo integral:</strong> Estes Termos de Uso, juntamente com a Política de Privacidade e quaisquer outros acordos específicos, constituem o acordo integral entre você e a Garanticoop em relação aos serviços.</li>
+                        </ul>
+                        
+                        <div class="highlight-box">
+                            <p>Se você tiver dúvidas sobre estes Termos de Uso, entre em contato conosco pelos canais oficiais disponíveis em nosso site. Estamos à disposição para esclarecimentos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <h3>Garanticoop</h3>
+                        <p>Facilitando o acesso ao crédito para micro e pequenas empresas desde 2010, com soluções que promovem o desenvolvimento econômico e a geração de empregos.</p>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.linkedin.com/company/garanticoop/posts/?feedView=all" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@garanticoop" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Links Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="/">Início</a></li>
+                            <li><a href="/#about">Quem Somos</a></li>
+                            <li><a href="/#services">Soluções</a></li>
+                            <li><a href="/#testimonials">Depoimentos</a></li>
+                            <li><a href="/#contact">Contato</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Soluções</h3>
+                        <ul class="footer-links">
+                            <li><a href="/#services">Garantia de Crédito</a></li>
+                            <li><a href="/#services">Consultoria Financeira</a></li>
+                            <li><a href="/#services">Capacitação Empresarial</a></li>
+                            <li><a href="#">Eventos</a></li>
+                            <li><a href="#">Parcerias</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Atendimento</h3>
+                        <ul class="footer-links">
+                            <li><a href="http://177.107.125.154:3378/" target="_blank">Área do Colaborador</a></li>
+                            <li><a href="#">Área do Associado</a></li>
+                            <li><a href="/faq.html">FAQ</a></li>
+                            <li><a href="/documentos.html">Documentos</a></li>
+                            <li><a href="/politica-de-privacidade.html">Política de Privacidade</a></li>
+                            <li><a href="/termos-de-uso.html" class="active">Termos de Uso</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; {{ currentYear }} Garanticoop - Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Whatsapp Button -->
+        <a href="#" class="whatsapp-btn" @click.prevent="openWhatsapp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para atualizar o ano atual no footer
+            function updateFooterYear() {
+                const currentYear = new Date().getFullYear();
+                
+                // Procura por elementos que contenham o texto "{{ currentYear }}" e substitui
+                const footerTexts = document.querySelectorAll('.footer-bottom p');
+                footerTexts.forEach(element => {
+                    if (element.innerHTML.includes('{{ currentYear }}')) {
+                        element.innerHTML = element.innerHTML.replace('{{ currentYear }}', currentYear);
+                    }
+                });
+            }
+            
+            // Executa imediatamente
+            updateFooterYear();
+            
+            // Executa novamente após um breve atraso (caso o Vue não tenha terminado de renderizar)
+            setTimeout(updateFooterYear, 500);
+        });
+        
+        const { createApp, ref, computed } = Vue;
+        
+        createApp({
+            setup() {
+                // Mobile menu state
+                const isMobileMenuOpen = ref(false);
+                
+                // Current year for footer
+                const currentYear = computed(() => new Date().getFullYear());
+                
+                // Methods
+                const toggleMobileMenu = () => {
+                    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+                };
+                
+                const closeMobileMenu = () => {
+                    isMobileMenuOpen.value = false;
+                };
+                
+                // Abre o WhatsApp
+                const openWhatsapp = () => {
+                    window.open('https://wa.me/554532524435?text=Olá, tenho uma dúvida sobre os termos de uso da Garanticoop. Poderia me ajudar?', '_blank');
+                };
+                
+                return {
+                    isMobileMenuOpen,
+                    currentYear,
+                    toggleMobileMenu,
+                    closeMobileMenu,
+                    openWhatsapp,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

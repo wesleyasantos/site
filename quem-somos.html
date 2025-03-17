@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quem Somos - Garanticoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("a7vq8iGtTJ92YJ0Dt");
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.prod.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Estilos específicos para a página Quem Somos */
+        .about-us-header {
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 75, 0.75), rgba(70, 115, 245, 0.65)), url('src/public/img/qsomosnos.png');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 120px 0;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 50px;
+        }
+        
+        .about-us-header h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .about-us-header h1:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .about-us-header p {
+            font-size: 20px;
+            margin: 30px auto 0;
+            max-width: 700px;
+            opacity: 0.95;
+        }
+        
+        .about-us-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .story-section {
+            position: relative;
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .story-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--primary);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            margin-bottom: 60px;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .timeline-content {
+            position: relative;
+            width: 45%;
+            padding: 30px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-content h3 {
+            font-size: 22px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .timeline-content p {
+            margin-bottom: 0;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+        
+        .timeline-date {
+            position: absolute;
+            top: 10px;
+            width: 70px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .left {
+            justify-content: flex-start;
+        }
+        
+        .right {
+            justify-content: flex-end;
+        }
+        
+        .left .timeline-date {
+            right: -35px;
+        }
+        
+        .right .timeline-date {
+            left: -35px;
+        }
+        
+        /* .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            left: 50%;
+            top: 30px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            z-index: 1;
+        } */
+        
+        .mission-vision {
+            background: linear-gradient(to right, var(--dark), var(--accent));
+            color: var(--white);
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .mission-vision-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        
+        .mission-card, .vision-card {
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .mission-card:hover, .vision-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mission-card h3, .vision-card h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .mission-card h3:after, .vision-card h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .mission-card p, .vision-card p {
+            font-size: 16px;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+        
+        .values-section {
+            padding: 100px 0;
+            background-color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .values-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(140, 225, 150, 0.05);
+            left: -200px;
+            top: -100px;
+            z-index: 1;
+        }
+        
+        .values-circle-2 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(70, 115, 245, 0.05);
+            right: -150px;
+            bottom: -100px;
+            z-index: 1;
+        }
+        
+        .values-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .values-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .values-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .values-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--gray);
+            font-size: 18px;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .value-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(140, 225, 150, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .value-card h3 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .value-card p {
+            color: var(--gray);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .team-section {
+            padding: 100px 0;
+            background-color: var(--light);
+        }
+        
+        .team-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .team-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .team-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .team-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--gray);
+            font-size: 18px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .team-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .team-img {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .team-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .team-card:hover .team-img img {
+            transform: scale(1.1);
+        }
+        
+        .team-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .team-info h3 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .team-info span {
+            display: block;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .team-info p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .team-social a {
+            width: 30px;
+            height: 30px;
+            background-color: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        .team-social a:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .stats-section {
+            padding: 100px 0;
+            background: linear-gradient(rgba(0, 0, 75, 0.85), rgba(130, 55, 220, 0.75)), url('src/public/img/2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+        }
+        
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .stat-count {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .partners-section {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .partners-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .partners-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .partners-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .partners-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--gray);
+            font-size: 18px;
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .partner-logo {
+            text-align: center;
+            padding: 20px;
+            /* filter: grayscale(100%); */
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .partner-logo:hover {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 60px;
+        }
+        
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, var(--dark), var(--accent));
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-container h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-container p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        @media (max-width: 992px) {
+            .mission-vision-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .partners-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .timeline:before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                justify-content: flex-start;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .timeline-date {
+                position: relative;
+                top: -10px;
+                left: 0;
+                right: auto;
+                margin-bottom: 10px;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .partners-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container header-container">
+                <a href="/">
+                    <img src="src/public/img/logo.svg" alt="Garanticoop" class="logo-image"/>
+                </a>
+                
+                <nav class="nav">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/quem-somos.html" class="nav-link active">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="https://parceiro.gestaoar.shop/fenacon/garanticoop" class="nav-link">Certificado Digital
+                        <span class="tooltip-text">Adquira já!</span>
+                    </a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </nav>
+                
+                <div class="mobile-menu-btn" @click="toggleMobileMenu">
+                    <i class="fas fa-bars"></i>
+                </div>
+                
+                <div class="mobile-menu" :class="{ active: isMobileMenuOpen }">
+                    <a href="/" class="nav-link">Início</a>
+                    <a href="/quem-somos.html" class="nav-link active">Quem Somos</a>
+                    <a href="/#services" class="nav-link">Soluções</a>
+                    <a href="/#testimonials" class="nav-link">Depoimentos</a>
+                    <a href="/#contact" class="nav-link">Contato</a>
+                    <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                </div>
+                
+                <div class="overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+            </div>
+        </header>
+        
+        <!-- About Us Header -->
+        <section class="about-us-header">
+            <div class="container">
+                <h1>Nossa História</h1>
+                <p>Desde 2010, a Garanticoop tem como missão facilitar o acesso ao crédito para micro e pequenas empresas, contribuindo para o desenvolvimento econômico regional e a geração de empregos.</p>
+            </div>
+        </section>
+        
+        <!-- Story Section -->
+        <section class="story-section">
+            <div class="story-container">
+                <div class="timeline">
+                    <div class="timeline-item left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2010</div>
+                            <div class="timeline-dot"></div>
+                            <h3>Fundação</h3>
+                            <p>A Garanticoop foi fundada em Toledo-PR, por iniciativa de líderes empresariais locais que identificaram a dificuldade das micro e pequenas empresas em acessar crédito com condições favoráveis.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2012</div>
+                            <div class="timeline-dot"></div>
+                            <h3>Primeiras Parcerias</h3>
+                            <p>Firmamos parcerias estratégicas com cooperativas de crédito e bancos regionais, ampliando nossa capacidade de oferecer garantias e impactar positivamente mais empresários.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2015</div>
+                            <div class="timeline-dot"></div>
+                            <h3>Expansão Regional</h3>
+                            <p>Ampliamos nossa atuação para outros municípios do Oeste do Paraná, levando nossas soluções de garantia de crédito para um número maior de empreendedores.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2017</div>
+                            <div class="timeline-dot"></div>
+                            <h3>Novos Serviços</h3>
+                            <p>Implementamos serviços de consultoria financeira e capacitação empresarial, oferecendo suporte completo aos empreendedores além das garantias de crédito.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2020</div>
+                            <div class="timeline-dot"></div>
+                            <h3>10 Anos de Impacto</h3>
+                            <p>Comemoramos uma década de atuação com mais de 10.000 empresas atendidas e R$ 500 milhões em operações garantidas, reafirmando nosso compromisso com o desenvolvimento econômico regional.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item right">
+                        <div class="timeline-content">
+                            <div class="timeline-date">2023</div>
+                            <div class="timeline-dot"></div>
+                            <h3>Transformação Digital</h3>
+                            <p>Investimos em tecnologia para modernizar nossos processos, lançando nossa plataforma digital que facilita a solicitação de garantias e oferece soluções financeiras integradas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item left">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Hoje</div>
+                            <div class="timeline-dot"></div>
+                            <h3>Futuro Promissor</h3>
+                            <p>Continuamos comprometidos em ser a ponte entre o empreendedor e as melhores soluções financeiras, contribuindo para o desenvolvimento sustentável das micro e pequenas empresas em toda a região.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mission and Vision Section -->
+        <section class="mission-vision">
+            <div class="container">
+                <div class="mission-vision-container">
+                    <div class="mission-card">
+                        <h3>Nossa Missão</h3>
+                        <p>Facilitar o acesso ao crédito para micro e pequenas empresas, oferecendo garantias complementares e soluções financeiras que promovam o desenvolvimento econômico e social das comunidades onde atuamos.</p>
+                        <p>Trabalhamos para ser uma ponte entre o empreendedor e as instituições financeiras, proporcionando condições mais favoráveis para o crescimento sustentável dos negócios e contribuindo para a geração de empregos e renda na região.</p>
+                    </div>
+                    
+                    <div class="vision-card">
+                        <h3>Nossa Visão</h3>
+                        <p>Ser reconhecida como referência nacional em sociedade de garantia de crédito, ampliando constantemente nosso impacto positivo no ecossistema empreendedor através de soluções financeiras inovadoras e acessíveis.</p>
+                        <p>Buscamos um futuro onde nenhuma empresa viável deixe de se desenvolver por falta de acesso a crédito adequado, consolidando um ambiente de negócios próspero e resiliente em toda nossa área de atuação.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Values Section -->
+        <section class="values-section">
+            <div class="values-circle"></div>
+            <div class="values-circle-2"></div>
+            <div class="container">
+                <div class="values-container">
+                    <div class="values-title">
+                        <h2>Nossos Valores</h2>
+                        <p>Princípios que orientam nossas ações e decisões no dia a dia, refletindo nosso compromisso com clientes, parceiros e a comunidade.</p>
+                    </div>
+                    
+                    <div class="values-grid">
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h3>Confiança</h3>
+                            <p>Construímos relações sólidas e duradouras baseadas na transparência, honestidade e cumprimento de nossos compromissos, conquistando a confiança de empreendedores e parceiros.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <h3>Integridade</h3>
+                            <p>Agimos com ética e responsabilidade em todas as nossas atividades, respeitando normas, leis e zelando pela segurança das informações e recursos sob nossa gestão.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3>Inovação</h3>
+                            <p>Buscamos constantemente aprimorar nossos processos e serviços, incorporando novas tecnologias e ideias para oferecer as melhores soluções aos nossos clientes.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Cooperação</h3>
+                            <p>Acreditamos no poder do trabalho colaborativo entre empreendedores, instituições financeiras e parceiros para construir um ecossistema de negócios mais forte e resiliente.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <h3>Sustentabilidade</h3>
+                            <p>Promovemos o desenvolvimento econômico sustentável, incentivando práticas responsáveis e gerando impacto positivo nas comunidades onde atuamos.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Excelência</h3>
+                            <p>Buscamos a melhoria contínua em todos os nossos processos e serviços, comprometidos com os mais altos padrões de qualidade e eficiência.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Team Section
+        <section class="team-section">
+            <div class="container">
+                <div class="team-container">
+                    <div class="team-title">
+                        <h2>Nossa Equipe</h2>
+                        <p>Conheça os profissionais dedicados que trabalham diariamente para impulsionar o crescimento do seu negócio</p>
+                    </div>
+                    
+                    <div class="team-grid">
+                        <div class="team-card">
+                            <div class="team-img">
+                                <img src="src/public/img/assoc-homem-1.jpg" alt="Carlos Mendes">
+                            </div>
+                            <div class="team-info">
+                                <h3>Carlos Mendes</h3>
+                                <span>Diretor Executivo</span>
+                                <p>Com mais de 20 anos de experiência no setor financeiro, Carlos lidera a Garanticoop com visão estratégica e compromisso com o desenvolvimento regional.</p>
+                                <div class="team-social">
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-img">
+                                <img src="src/public/img/assoc-mulher-1.jpg" alt="Ana Oliveira">
+                            </div>
+                            <div class="team-info">
+                                <h3>Ana Oliveira</h3>
+                                <span>Gerente de Operações</span>
+                                <p>Especialista em análise de crédito, Ana coordena os processos de aprovação de garantias, assegurando agilidade e precisão nas operações.</p>
+                                <div class="team-social">
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-img">
+                                <img src="src/public/img/assoc-homem-2.jpg" alt="Ricardo Santos">
+                            </div>
+                            <div class="team-info">
+                                <h3>Ricardo Santos</h3>
+                                <span>Consultor Financeiro</span>
+                                <p>Com formação em economia e finanças, Ricardo desenvolve soluções personalizadas que conectam empreendedores às melhores oportunidades de crédito.</p>
+                                <div class="team-social">
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+        
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div class="stat-count">+18000</div>
+                            <div class="stat-label">Empresas Atendidas</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-count">+25000</div>
+                            <div class="stat-label">Garantias Emitidas</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-count">1 Bi</div>
+                            <div class="stat-label">Em Crédito Viabilizado</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-count">98%</div>
+                            <div class="stat-label">Índice de Satisfação</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Partners Section -->
+        <section class="partners-section">
+            <div class="container">
+                <div class="partners-container">
+                    <div class="partners-title">
+                        <h2>Nossos Parceiros</h2>
+                        <p>Trabalhamos em conjunto com instituições financeiras e organizações de apoio ao empreendedorismo</p>
+                    </div>
+                    
+                    <div class="partners-grid">
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/AILOS.png" alt="AILOS">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/BRDE.png" alt="BRDE">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/CRESOL.png" alt="CRESOL">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/FOMENTO.png" alt="FOMENTO PARANÁ">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/GOVERNO.png" alt="GOVERNO DO PARANÁ">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/SEBRAE.png" alt="SEBRAE">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/SICOOB.png" alt="SICOOB">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/SICREDI.png" alt="SICREDI">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/UNICRED.png" alt="UNICRED">
+                        </div>
+                        <div class="partner-logo">
+                            <img src="src/public/parceiros/UNIPRIME.png" alt="UNIPRIME">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-container">
+                    <h2>Pronto para impulsionar seu negócio?</h2>
+                    <p>Conheça nossas soluções e descubra como a Garanticoop pode ajudar sua empresa a conseguir melhores condições de crédito para crescer.</p>
+                    <div class="cta-buttons">
+                        <a href="/simulacao.html" class="btn btn-primary">Faça sua simulação</a>
+                        <a href="/#contact" class="btn btn-outline">Fale com um consultor</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <h3>Garanticoop</h3>
+                        <p>Facilitando o acesso ao crédito para micro e pequenas empresas desde 2010, com soluções que promovem o desenvolvimento econômico e a geração de empregos.</p>
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.linkedin.com/company/garanticoop/posts/?feedView=all" class="social-icon" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/garanticoop/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@garanticoop" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Links Rápidos</h3>
+                        <ul class="footer-links">
+                            <li><a href="/">Início</a></li>
+                            <li><a href="/quem-somos.html" class="active">Quem Somos</a></li>
+                            <li><a href="/#services">Soluções</a></li>
+                            <li><a href="/#testimonials">Depoimentos</a></li>
+                            <li><a href="/#contact">Contato</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Soluções</h3>
+                        <ul class="footer-links">
+                            <li><a href="/#services">Garantia de Crédito</a></li>
+                            <li><a href="/#services">Consultoria Financeira</a></li>
+                            <li><a href="/#services">Capacitação Empresarial</a></li>
+                            <li><a href="#">Eventos</a></li>
+                            <li><a href="#">Parcerias</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>Atendimento</h3>
+                        <ul class="footer-links">
+                            <li><a href="http://177.107.125.154:3378/" target="_blank">Área do Colaborador</a></li>
+                            <li><a href="#">Área do Associado</a></li>
+                            <li><a href="/faq.html">FAQ</a></li>
+                            <li><a href="/documentos.html">Documentos</a></li>
+                            <li><a href="/politica-de-privacidade.html">Política de Privacidade</a></li>
+                            <li><a href="/termos-de-uso.html">Termos de Uso</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; {{ currentYear }} Garanticoop - Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- Whatsapp Button -->
+        <a href="#" class="whatsapp-btn" @click.prevent="openWhatsapp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para animar números quando entrarem na viewport
+            function animateNumbers() {
+                const statItems = document.querySelectorAll('.stat-count');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const target = entry.target;
+                            const value = target.innerText.replace(/\D/g, '');
+                            const suffix = target.innerText.replace(/[0-9]/g, '');
+                            let startValue = 0;
+                            let duration = 2000;
+                            let frameRate = 20;
+                            let increment = parseInt(value) / (duration / frameRate);
+                            
+                            let counter = setInterval(() => {
+                                startValue += increment;
+                                
+                                if (startValue >= parseInt(value)) {
+                                    target.innerText = parseInt(value).toLocaleString() + suffix;
+                                    clearInterval(counter);
+                                } else {
+                                    target.innerText = Math.floor(startValue).toLocaleString() + suffix;
+                                }
+                            }, frameRate);
+                            
+                            observer.unobserve(target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                statItems.forEach(item => {
+                    observer.observe(item);
+                });
+            }
+            
+            // Animação para elementos entrarem com fade-in
+            function animateFadeIn() {
+                const sections = document.querySelectorAll('section');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = 1;
+                            entry.target.style.transform = 'translateY(0)';
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                sections.forEach(section => {
+                    if (section.classList.contains('about-us-header')) return;
+                    section.style.opacity = 0;
+                    section.style.transform = 'translateY(20px)';
+                    section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    observer.observe(section);
+                });
+            }
+            
+            // Função para atualizar o ano atual no footer
+            function updateFooterYear() {
+                const currentYear = new Date().getFullYear();
+                
+                // Procura por elementos que contenham o texto "{{ currentYear }}" e substitui
+                const footerTexts = document.querySelectorAll('.footer-bottom p');
+                footerTexts.forEach(element => {
+                    if (element.innerHTML.includes('{{ currentYear }}')) {
+                        element.innerHTML = element.innerHTML.replace('{{ currentYear }}', currentYear);
+                    }
+                });
+            }
+            
+            // Executa as funções
+            animateNumbers();
+            animateFadeIn();
+            updateFooterYear();
+            
+            // Executa novamente após um breve atraso (caso o Vue não tenha terminado de renderizar)
+            setTimeout(updateFooterYear, 500);
+        });
+        
+        const { createApp, ref, computed } = Vue;
+        
+        createApp({
+            setup() {
+                // Mobile menu state
+                const isMobileMenuOpen = ref(false);
+                
+                // Current year for footer
+                const currentYear = computed(() => new Date().getFullYear());
+                
+                // Methods
+                const toggleMobileMenu = () => {
+                    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+                };
+                
+                const closeMobileMenu = () => {
+                    isMobileMenuOpen.value = false;
+                };
+                
+                // Abre o WhatsApp
+                const openWhatsapp = () => {
+                    window.open('https://wa.me/554532524435?text=Olá, gostaria de saber mais sobre a Garanticoop e seus serviços. Poderia me ajudar?', '_blank');
+                };
+                
+                return {
+                    isMobileMenuOpen,
+                    currentYear,
+                    toggleMobileMenu,
+                    closeMobileMenu,
+                    openWhatsapp,
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
